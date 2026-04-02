@@ -35,21 +35,29 @@ export const CreateProfile: React.FC = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate('/'); return; }
 
-      const { error: insertError } = await supabase
-        .from('profiles')
-        .upsert({
-          id: user.id,
-          first_name: form.name.split(' ')[0] || form.name,
-          last_name: form.name.split(' ').slice(1).join(' ') || '',
-          designation: form.designation,
-          citizenship: form.nationality,
-          residency_status: form.resident_status,
-          sex: form.sex,
-          date_of_birth: form.date_of_birth || null,
-          height: form.height ? Number(form.height) : null,
-          weight: form.weight ? Number(form.weight) : null,
-          updated_at: new Date().toISOString(),
-        });
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const uniqueCode = Array.from({length: 4}, () => chars[Math.floor(Math.random() * 36)]).join('');
+const firstName = form.name.split(' ')[0] || form.name;
+const handle = firstName.toLowerCase().replace(/[^a-z0-9]/g, '');
+const username = `${uniqueCode}-${handle}`;
+
+const { error: insertError } = await supabase
+  .from('profiles')
+  .upsert({
+    id: user.id,
+    first_name: firstName,
+    last_name: form.name.split(' ').slice(1).join(' ') || '',
+    designation: form.designation,
+    citizenship: form.nationality,
+    residency_status: form.resident_status,
+    sex: form.sex,
+    date_of_birth: form.date_of_birth || null,
+    height: form.height ? Number(form.height) : null,
+    weight: form.weight ? Number(form.weight) : null,
+    username: username,
+    username_handle: handle,
+    updated_at: new Date().toISOString(),
+  });
 
       if (insertError) throw insertError;
       navigate('/cv');
