@@ -1,186 +1,141 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Profile } from '../types';
-
-const profileSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  designation: z.string().min(1, 'Designation is required'),
-  picture: z.string().url('Must be a valid URL'),
-  dateOfBirth: z.string(),
-  nationality: z.string().min(1, 'Nationality is required'),
-  residentStatus: z.string(),
-  sex: z.enum(['Male', 'Female', 'Other']),
-  height: z.number().min(100).max(300),
-  weight: z.number().min(30).max(200),
-  medicalConditions: z.array(z.string()),
-  basicTraining: z.array(z.string()),
-  licenses: z.array(z.object({
-    type: z.string(),
-    issuingAuthority: z.string(),
-  })),
-  certifyingExperience: z.array(z.object({
-    type: z.enum(['line', 'base', 'workshop', 'techPub', 'planning', 'quality', 'safety']),
-    description: z.string(),
-    duration: z.string(),
-  })),
-  nonCertifyingExperience: z.array(z.object({
-    type: z.enum(['line', 'base', 'workshop', 'techPub', 'planning', 'quality', 'safety']),
-    description: z.string(),
-    duration: z.string(),
-  })),
-  driversLicense: z.object({
-    number: z.string(),
-    issuingCountry: z.string(),
-    vehicleType: z.string().optional(),
-  }),
-  continuousTraining: z.array(z.string()),
-  companyTraining: z.array(z.string()),
-  hasToolBox: z.boolean(),
-  otherTraining: z.array(z.string()),
-});
+import { supabase } from '../lib/supabase';
 
 export const CreateProfile: React.FC = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors } } = useForm<Profile>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      medicalConditions: [],
-      basicTraining: [''],
-      licenses: [{ type: '', issuingAuthority: '' }],
-      certifyingExperience: [{ type: 'line', description: '', duration: '' }],
-      nonCertifyingExperience: [{ type: 'line', description: '', duration: '' }],
-      continuousTraining: [''],
-      companyTraining: [],
-      otherTraining: [],
-      hasToolBox: false,
-    },
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: '',
+    designation: '',
+    nationality: '',
+    resident_status: '',
+    sex: 'Male',
+    date_of_birth: '',
+    height: '',
+    weight: '',
+    has_tool_box: false,
   });
 
-  const onSubmit = (data: Profile) => {
-    console.log(data);
-    // Here you would typically save the data to your backend
-    navigate('/');
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
+    }));
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate('/'); return; }
+
+      const { error: insertError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          first_name: form.name.split(' ')[0] || form.name,
+          last_name: form.name.split(' ').slice(1).join(' ') || '',
+          designation: form.designation,
+          citizenship: form.nationality,
+          residency_status: form.resident_status,
+          sex: form.sex,
+          date_of_birth: form.date_of_birth || null,
+          height: form.height ? Number(form.height) : null,
+          weight: form.weight ? Number(form.weight) : null,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (insertError) throw insertError;
+      navigate('/cv');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save profile');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const inputClass = "mt-1 block w-full rounded-md bg-gray-700 border border-gray-600 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500";
+  const labelClass = "block text-sm font-medium text-gray-300 mb-1";
+
   return (
-    <div className="max-w-4xl mx-auto bg-gray-800 shadow-xl rounded-lg overflow-hidden border border-gray-700">
-      <div className="p-8">
-        <h1 className="text-2xl font-bold text-white mb-8">Create Profile</h1>
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Personal Information */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-blue-400">Personal Information</h2>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Name</label>
-                <input
-                  type="text"
-                  {...register('name')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-              </div>
+    <div className="max-w-2xl mx-auto bg-gray-800 shadow-xl rounded-lg border border-gray-700 p-8">
+      <h1 className="text-2xl font-bold text-white mb-2">Create your AECircle profile</h1>
+      <p className="text-gray-400 mb-8">Start with the basics — you can add experience and licenses after.</p>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Designation</label>
-                <input
-                  type="text"
-                  {...register('designation')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-                {errors.designation && <p className="text-red-500 text-sm mt-1">{errors.designation.message}</p>}
-              </div>
+      {error && (
+        <div className="mb-6 p-3 rounded bg-red-500/10 border border-red-500 text-red-400 text-sm">{error}</div>
+      )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Profile Picture URL</label>
-                <input
-                  type="url"
-                  {...register('picture')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-                {errors.picture && <p className="text-red-500 text-sm mt-1">{errors.picture.message}</p>}
-              </div>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div>
+          <label className={labelClass}>Full name</label>
+          <input type="text" name="name" value={form.name} onChange={handleChange} required className={inputClass} placeholder="e.g. Samuel Hayden" />
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Date of Birth</label>
-                <input
-                  type="date"
-                  {...register('dateOfBirth')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
+        <div>
+          <label className={labelClass}>Designation</label>
+          <input type="text" name="designation" value={form.designation} onChange={handleChange} required className={inputClass} placeholder="e.g. Aircraft Maintenance Engineer" />
+        </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Sex</label>
-                <select
-                  {...register('sex')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-blue-400">Additional Information</h2>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Nationality</label>
-                <input
-                  type="text"
-                  {...register('nationality')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Resident Status</label>
-                <input
-                  type="text"
-                  {...register('residentStatus')}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Height (cm)</label>
-                <input
-                  type="number"
-                  {...register('height', { valueAsNumber: true })}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300">Weight (kg)</label>
-                <input
-                  type="number"
-                  {...register('weight', { valueAsNumber: true })}
-                  className="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-            </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Nationality</label>
+            <input type="text" name="nationality" value={form.nationality} onChange={handleChange} className={inputClass} placeholder="e.g. British" />
           </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-end mt-8">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md font-medium"
-            >
-              Create Profile
-            </button>
+          <div>
+            <label className={labelClass}>Resident status</label>
+            <input type="text" name="resident_status" value={form.resident_status} onChange={handleChange} className={inputClass} placeholder="e.g. UAE Resident" />
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Sex</label>
+            <select name="sex" value={form.sex} onChange={handleChange} className={inputClass}>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Date of birth</label>
+            <input type="date" name="date_of_birth" value={form.date_of_birth} onChange={handleChange} className={inputClass} />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className={labelClass}>Height (cm)</label>
+            <input type="number" name="height" value={form.height} onChange={handleChange} className={inputClass} placeholder="175" />
+          </div>
+          <div>
+            <label className={labelClass}>Weight (kg)</label>
+            <input type="number" name="weight" value={form.weight} onChange={handleChange} className={inputClass} placeholder="80" />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <input type="checkbox" name="has_tool_box" id="toolbox" checked={form.has_tool_box} onChange={handleChange} className="w-4 h-4 rounded bg-gray-700 border-gray-600 text-blue-500" />
+          <label htmlFor="toolbox" className="text-gray-300 text-sm">I have my own toolbox</label>
+        </div>
+
+        <div className="flex gap-3 pt-4">
+          <button type="submit" disabled={isLoading} className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white py-3 rounded-md font-medium transition-colors">
+            {isLoading ? 'Saving...' : 'Create my profile'}
+          </button>
+          <button type="button" onClick={() => navigate('/cv')} className="px-6 py-3 border border-gray-600 text-gray-300 hover:text-white rounded-md transition-colors">
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
+
+export default CreateProfile;
