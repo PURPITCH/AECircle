@@ -17,7 +17,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ profile }) => {
       <div className="min-h-64 flex flex-col items-center justify-center text-center p-8">
         <h2 className="text-2xl font-bold text-white mb-3">Welcome to AECircle</h2>
         <p className="text-gray-400 mb-6">You haven't created your engineer profile yet.</p>
-        <a href="/cv/create" className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors">
+       <button onClick={() => window.location.assign('/cv/create')} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors">
+  Create my profile
+</button>
           Create my profile
         </a>
       </div>
