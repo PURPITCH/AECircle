@@ -91,22 +91,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
             </div>
           </div>
 
-          <div className="col-span-2 md:col-span-1">
-            <h2 className="text-lg font-semibold flex items-center gap-2 text-blue-400 mb-3">
-              <Award className="w-5 h-5" /> Licenses & Certifications
-            </h2>
-            {profile.licenses?.length > 0 ? (
-              profile.licenses.map((license: any, i: number) => (
-                <div key={i} className="mb-2 text-sm">
-                  <p className="font-medium text-gray-200">{license.type}</p>
-                  <p className="text-gray-400">{license.issuingAuthority}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-500 text-sm">No licenses added yet</p>
-            )}
-          </div>
-
+         
           <div className="col-span-2">
             <h2 className="text-lg font-semibold flex items-center gap-2 text-blue-400 mb-3">
               <Briefcase className="w-5 h-5" /> Experience
