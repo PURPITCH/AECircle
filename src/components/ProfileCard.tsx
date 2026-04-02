@@ -65,7 +65,9 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
               <p className="text-gray-400">
                 {age ? `${age} years` : ''}{age && profile.citizenship ? ' • ' : ''}{profile.citizenship || ''}
               </p>
-              <p className="text-gray-400">{profile.residency_status || ''}</p>
+            {profile.username && (
+  <p className="text-blue-500 text-sm mt-1">aircraft.engineer/cv/{profile.username}</p>
+)}
             </div>
           </div>
           <button onClick={() => navigate('/cv/create')} className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors">
