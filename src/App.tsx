@@ -7,7 +7,7 @@ import { AuthCallback } from './components/AuthCallback';
 import { ProfileCard } from './components/ProfileCard';
 import { CreateProfile } from './components/CreateProfile';
 import { supabase } from './lib/supabase';
-import { Plane, Briefcase, BookOpen, GraduationCap, Search, ChevronDown, User, KeyRound, EyeOff, Trash2, LogOut, Menu, X } from 'lucide-react';
+import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, EyeOff, Trash2, LogOut, Menu, X } from 'lucide-react';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -56,44 +56,22 @@ function NavBar() {
     navigate('/');
   };
 
-  const firstLetter = userEmail.charAt(0).toUpperCase();
-
   return (
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center gap-3 h-14">
 
-          {/* Logo */}
-          <Link to="/cv" className="flex items-center gap-2 flex-shrink-0">
-            <Plane className="h-6 w-6 text-blue-500" />
-            <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
-          </Link>
-
-          {/* Search bar */}
-          <div className="flex-1 max-w-md mx-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-              <input type="text" placeholder="Search engineers, jobs..."
-                className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-            </div>
-          </div>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navItem('/cv', 'CV', User)}
-            {navItem('/jobs', 'Jobs', Briefcase)}
-            {navItem('/trainings', 'Trainings', BookOpen)}
-            {navItem('/academy', 'Academy', GraduationCap)}
-          </div>
-
-          {/* Avatar dropdown */}
-          <div className="relative flex-shrink-0 ml-auto md:ml-0" ref={menuRef}>
-            <button onClick={() => setMenuOpen(!menuOpen)}
-              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full w-8 h-8 justify-center font-bold text-sm transition-colors">
-              {firstLetter || '?'}
+          {/* Logo — clicking opens dropdown */}
+          <div className="relative flex-shrink-0" ref={menuRef}>
+            <button onClick={() => { setMenuOpen(!menuOpen); setDeleteConfirm(false); }}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Plane className="h-6 w-6 text-blue-500" />
+              <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
             </button>
+
+            {/* Dropdown under logo */}
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
+              <div className="absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-700">
                   <p className="text-xs text-gray-500 truncate">{userEmail}</p>
                 </div>
@@ -136,8 +114,25 @@ function NavBar() {
             )}
           </div>
 
+          {/* Search bar — centered */}
+          <div className="flex-1 max-w-sm mx-auto">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <input type="text" placeholder="Search engineers, jobs..."
+                className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+            </div>
+          </div>
+
+          {/* Desktop nav links */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItem('/cv', 'CV', User)}
+            {navItem('/jobs', 'Jobs', Briefcase)}
+            {navItem('/trainings', 'Trainings', BookOpen)}
+            {navItem('/academy', 'Academy', GraduationCap)}
+          </div>
+
           {/* Mobile menu button */}
-          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white ml-2">
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
