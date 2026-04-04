@@ -133,6 +133,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
           </div>
         </div>
       </div>
+      <ExperienceSection />
       <LicenseSection />
     </div>
   );
