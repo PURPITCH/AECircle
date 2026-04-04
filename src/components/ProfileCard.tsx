@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { User, Briefcase, Wrench, Award, Car, Edit2, Loader2 } from 'lucide-react';
+import { ExperienceSection } from './ExperienceSection';
 import { LicenseSection } from './LicenseSection';
 
 export const ProfileCard: React.FC<{ profile: any }> = () => {
