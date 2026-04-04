@@ -134,9 +134,9 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
           </div>
         </div>
       </div>
-      <TrainingSection />
-      <ExperienceSection />
+          <ExperienceSection />
       <LicenseSection />
+        <TrainingSection />
     </div>
   );
 };
