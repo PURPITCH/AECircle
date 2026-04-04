@@ -73,6 +73,7 @@ export const ExperienceSection: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this experience? This cannot be undone.')) return;
     await supabase.from('experiences').delete().eq('id', id);
     await fetchExperiences();
   };
