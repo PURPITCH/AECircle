@@ -77,7 +77,8 @@ export const LicenseSection: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+ const handleDelete = async (id: string) => {
+    if (!window.confirm('Are you sure you want to delete this license? This cannot be undone.')) return;
     await supabase.from('licenses').delete().eq('id', id);
     await fetchLicenses();
   };
