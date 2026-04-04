@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { User, Briefcase, Wrench, Award, Car, Edit2, Loader2 } from 'lucide-react';
-import { TrainingSection } from './TrainingSection';
 import { ExperienceSection } from './ExperienceSection';
 import { LicenseSection } from './LicenseSection';
+import { TrainingSection } from './TrainingSection';
 
 export const ProfileCard: React.FC<{ profile: any }> = () => {
   const navigate = useNavigate();
