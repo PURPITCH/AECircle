@@ -103,7 +103,7 @@ export const LicenseSection: React.FC = () => {
     <div className="mt-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold flex items-center gap-2 text-blue-400">
-          <Award className="w-5 h-5" /> Licenses & Endorsements
+  Licenses & Endorsements
         </h2>
         {!isAdding && (
           <button onClick={() => { setIsAdding(true); setEditingId(null); setForm(emptyLicense()); }}
