@@ -103,7 +103,7 @@ export const ExperienceSection: React.FC = () => {
         {!isAdding && (
           <button onClick={() => { setIsAdding(true); setEditingId(null); setForm(empty()); }}
             className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
-            <Plus className="w-4 h-4" /> Add experience
+            <Plus className="w-4 h-4" /> Add 
           </button>
         )}
       </div>
