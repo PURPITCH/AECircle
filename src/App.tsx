@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { LandingPage } from './components/LandingPage';
 import { SignUp } from './components/SignUp';
@@ -7,104 +7,189 @@ import { AuthCallback } from './components/AuthCallback';
 import { ProfileCard } from './components/ProfileCard';
 import { CreateProfile } from './components/CreateProfile';
 import { supabase } from './lib/supabase';
-import { Plane, User, Briefcase, BookOpen, GraduationCap, LogOut } from 'lucide-react';
+import { Plane, Briefcase, BookOpen, GraduationCap, Search, ChevronDown, User, KeyRound, EyeOff, Trash2, LogOut, Menu, X } from 'lucide-react';
 
 function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [userName, setUserName] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setUserName(data.user.email || '');
+      if (data.user) setUserEmail(data.user.email || '');
     });
   }, []);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+        setDeleteConfirm(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+
+  const navItem = (path: string, label: string, Icon: any) => (
+    <Link to={path} onClick={() => setMobileOpen(false)}
+      className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors
+        ${isActive(path) ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'}`}>
+      <Icon className="w-4 h-4" />{label}
+    </Link>
+  );
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     navigate('/');
   };
 
-  const navItem = (path, label, Icon) => {
-    const active = location.pathname === path;
-    return (
-      <Link to={path} className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${active ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'}`}>
-        <Icon className="w-4 h-4" />{label}
-      </Link>
-    );
+  const handleDeleteAccount = async () => {
+    if (!deleteConfirm) { setDeleteConfirm(true); return; }
+    await supabase.auth.signOut();
+    navigate('/');
   };
+
+  const firstLetter = userEmail.charAt(0).toUpperCase();
 
   return (
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-8">
-            <Link to="/cv" className="flex items-center gap-2">
-              <Plane className="h-7 w-7 text-blue-500" />
-              <span className="text-xl font-bold text-white">AECircle</span>
-            </Link>
-            <div className="hidden md:flex items-center gap-1">
-              {navItem('/cv', 'My CV', User)}
-              {navItem('/jobs', 'Jobs', Briefcase)}
-              {navItem('/trainings', 'Trainings', BookOpen)}
-              {navItem('/academy', 'Academy', GraduationCap)}
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center gap-3 h-14">
+
+          {/* Logo */}
+          <Link to="/cv" className="flex items-center gap-2 flex-shrink-0">
+            <Plane className="h-6 w-6 text-blue-500" />
+            <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
+          </Link>
+
+          {/* Search bar */}
+          <div className="flex-1 max-w-md mx-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <input type="text" placeholder="Search engineers, jobs..."
+                className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-400 hidden sm:block">{userName}</span>
-            <button onClick={handleSignOut} className="flex items-center gap-1 text-gray-400 hover:text-white text-sm px-3 py-1.5 rounded-md hover:bg-gray-700 transition-colors">
-              <LogOut className="w-4 h-4" />Sign out
-            </button>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItem('/cv', 'CV', User)}
+            {navItem('/jobs', 'Jobs', Briefcase)}
+            {navItem('/trainings', 'Trainings', BookOpen)}
+            {navItem('/academy', 'Academy', GraduationCap)}
           </div>
+
+          {/* Avatar dropdown */}
+          <div className="relative flex-shrink-0 ml-auto md:ml-0" ref={menuRef}>
+            <button onClick={() => setMenuOpen(!menuOpen)}
+              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full w-8 h-8 justify-center font-bold text-sm transition-colors">
+              {firstLetter || '?'}
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-700">
+                  <p className="text-xs text-gray-500 truncate">{userEmail}</p>
+                </div>
+                <button onClick={() => { navigate('/cv'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <User className="w-4 h-4" /> My CV
+                </button>
+                <button onClick={() => { navigate('/cv/create'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <KeyRound className="w-4 h-4" /> Edit profile
+                </button>
+                <div className="border-t border-gray-700" />
+                <button onClick={() => setMenuOpen(false)}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <EyeOff className="w-4 h-4" /> Hide my profile
+                </button>
+                <div className="border-t border-gray-700" />
+                {!deleteConfirm ? (
+                  <button onClick={() => setDeleteConfirm(true)}
+                    className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors">
+                    <Trash2 className="w-4 h-4" /> Delete account
+                  </button>
+                ) : (
+                  <div className="px-4 py-3 bg-red-500/10">
+                    <p className="text-xs text-red-400 mb-2">Are you sure? Cannot be undone.</p>
+                    <div className="flex gap-2">
+                      <button onClick={() => setDeleteConfirm(false)}
+                        className="flex-1 text-xs py-1.5 border border-gray-600 text-gray-300 rounded hover:bg-gray-700">Cancel</button>
+                      <button onClick={handleDeleteAccount}
+                        className="flex-1 text-xs py-1.5 bg-red-600 hover:bg-red-700 text-white rounded">Delete</button>
+                    </div>
+                  </div>
+                )}
+                <div className="border-t border-gray-700" />
+                <button onClick={handleSignOut}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <LogOut className="w-4 h-4" /> Sign out
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white ml-2">
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
-        <div className="md:hidden flex gap-1 pb-2 overflow-x-auto">
-          {navItem('/cv', 'My CV', User)}
-          {navItem('/jobs', 'Jobs', Briefcase)}
-          {navItem('/trainings', 'Trainings', BookOpen)}
-          {navItem('/academy', 'Academy', GraduationCap)}
-        </div>
+
+        {/* Mobile nav */}
+        {mobileOpen && (
+          <div className="md:hidden flex flex-col gap-1 pb-3">
+            {navItem('/cv', 'CV', User)}
+            {navItem('/jobs', 'Jobs', Briefcase)}
+            {navItem('/trainings', 'Trainings', BookOpen)}
+            {navItem('/academy', 'Academy', GraduationCap)}
+          </div>
+        )}
       </div>
     </nav>
   );
 }
 
-function ComingSoon({ title }) {
+function ComingSoon({ title }: { title: string }) {
   return (
     <div className="min-h-64 flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-white mb-3">{title}</h1>
+        <h1 className="text-2xl font-bold text-white mb-3">{title}</h1>
         <p className="text-gray-400">Coming soon — we are building this for you.</p>
       </div>
     </div>
   );
 }
 
-function AppLayout({ children }) {
+function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gray-900">
       <NavBar />
-      <main className="max-w-5xl mx-auto px-4 py-8">{children}</main>
+      <main className="max-w-5xl mx-auto px-4 py-6">{children}</main>
     </div>
   );
 }
 
-function ProtectedRoute({ children }) {
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
-
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) navigate('/');
       setChecking(false);
     });
   }, []);
-
   if (checking) return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="text-blue-400 text-lg">Loading AECircle...</div>
+      <div className="text-blue-400">Loading...</div>
     </div>
   );
-
   return <>{children}</>;
 }
 
@@ -119,8 +204,8 @@ function App() {
         <Route path="/cv" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/create" element={<ProtectedRoute><AppLayout><CreateProfile /></AppLayout></ProtectedRoute>} />
         <Route path="/jobs" element={<ProtectedRoute><AppLayout><ComingSoon title="Aviation Jobs" /></AppLayout></ProtectedRoute>} />
-        <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings and Recurrency" /></AppLayout></ProtectedRoute>} />
-        <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy — EASA Part 66" /></AppLayout></ProtectedRoute>} />
+        <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
+        <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
