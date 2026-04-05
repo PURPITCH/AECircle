@@ -75,7 +75,7 @@ export const TrainingSection: React.FC = () => {
       if (editingId) {
         await supabase.from('trainings').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editingId);
       } else {
-        await supabase.from('trainings').insert({ ...form, tab: activeTab, user_id: user.id });
+        const payload = { ...form, tab: activeTab, user_id: user.id }; console.log('Sending:', payload); const { error: insertErr } = await supabase.from('trainings').insert(payload); if (insertErr) { alert('Insert error: ' + insertErr.message); throw insertErr; }
       }
       await fetchTrainings();
       setIsAdding(false);
