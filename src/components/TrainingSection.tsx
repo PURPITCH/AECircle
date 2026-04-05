@@ -81,7 +81,7 @@ export const TrainingSection: React.FC = () => {
       setIsAdding(false);
       setEditingId(null);
       setForm(empty(activeTab));
-    } finally { setSaving(false); }
+    } catch (err: any) {       console.error('Save error:', err);       alert('Save failed: ' + (err?.message || JSON.stringify(err)));     } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string) => {
