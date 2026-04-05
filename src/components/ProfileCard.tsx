@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ExperienceSection } from './ExperienceSection';
 import { LicenseSection } from './LicenseSection';
+import { TrainingSection } from './TrainingSection';
 import { Loader2, Wrench } from 'lucide-react';
 
 export const ProfileCard: React.FC<{ profile: any }> = () => {
@@ -107,7 +108,10 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
         <LicenseSection />
       </div>
-
+<div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
+  <TrainingSection />
+</div>
+      
     </div>
   );
 };
