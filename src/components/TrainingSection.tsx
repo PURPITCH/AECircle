@@ -75,7 +75,7 @@ export const TrainingSection: React.FC = () => {
       if (editingId) {
         await supabase.from('trainings').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editingId);
       } else {
-        const payload = { ...form, tab: activeTab, user_id: user.id }; console.log('Sending:', payload); const { error: insertErr } = await supabase.from('trainings').insert(payload); if (insertErr) { alert('Insert error: ' + insertErr.message); throw insertErr; }
+        const payload = {    ...form,    tab: activeTab,    user_id: user.id,   date_completed: form.date_completed || null,   expiry_date: form.expiry_date || null, }; console.log('Sending:', payload); const { error: insertErr } = await supabase.from('trainings').insert(payload); if (insertErr) { alert('Insert error: ' + insertErr.message); throw insertErr; }
       }
       await fetchTrainings();
       setIsAdding(false);
