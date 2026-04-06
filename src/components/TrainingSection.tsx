@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 
-const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate'];
+const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate', 'Language'];
 
 const CONTINUOUS_COURSES = [
   'Human Factors','Fuel Tank Safety','ETOPS','SMS','Part 145',
@@ -173,21 +173,19 @@ export const TrainingSection: React.FC = () => {
             <input className={inputClass} placeholder="e.g. University name" value={form.institution} onChange={e => set('institution', e.target.value)} /></div>
           <div><label className={labelClass}>Year completed</label>
             <input type="date" className={inputClass} value={form.date_completed} onChange={e => set('date_completed', e.target.value)} /></div>
-          <div className="border-t border-gray-700 pt-3 mt-1">
-            <p className="text-xs font-medium text-gray-400 mb-3">Language Proficiency</p>
-            <div className="grid grid-cols-2 gap-3">
-              <div><label className={labelClass}>Language</label>
-                <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>
-                  <option value="">Select language</option>
-                  {LANGUAGES.map(l => <option key={l}>{l}</option>)}
-                </select></div>
-              <div><label className={labelClass}>Level</label>
-                <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>
-                  <option value="">Select level</option>
-                  {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}
-                </select></div>
-            </div>
-          </div>
+case 'Language':
+  return <>
+    <div><label className={labelClass}>Language</label>
+      <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>
+        <option value="">Select language</option>
+        {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+      </select></div>
+    <div><label className={labelClass}>Proficiency level</label>
+      <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>
+        <option value="">Select level</option>
+        {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}
+      </select></div>
+  </>;
         </>;
 
       default: return null;
