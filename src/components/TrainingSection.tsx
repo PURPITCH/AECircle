@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 
-const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate', 'Language'];
+const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate'];
 
 const CONTINUOUS_COURSES = [
   'Human Factors','Fuel Tank Safety','ETOPS','SMS','Part 145',
@@ -75,13 +75,13 @@ export const TrainingSection: React.FC = () => {
       if (editingId) {
         await supabase.from('trainings').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editingId);
       } else {
-        const payload = {    ...form,    tab: activeTab,    user_id: user.id,   date_completed: form.date_completed || null,   expiry_date: form.expiry_date || null, }; console.log('Sending:', payload); const { error: insertErr } = await supabase.from('trainings').insert(payload); if (insertErr) { alert('Insert error: ' + insertErr.message); throw insertErr; }
+        await supabase.from('trainings').insert({ ...form, tab: activeTab, user_id: user.id });
       }
       await fetchTrainings();
       setIsAdding(false);
       setEditingId(null);
       setForm(empty(activeTab));
-    } catch (err: any) {       console.error('Save error:', err);       alert('Save failed: ' + (err?.message || JSON.stringify(err)));     } finally { setSaving(false); }
+    } finally { setSaving(false); }
   };
 
   const handleDelete = async (id: string) => {
@@ -173,19 +173,20 @@ export const TrainingSection: React.FC = () => {
             <input className={inputClass} placeholder="e.g. University name" value={form.institution} onChange={e => set('institution', e.target.value)} /></div>
           <div><label className={labelClass}>Year completed</label>
             <input type="date" className={inputClass} value={form.date_completed} onChange={e => set('date_completed', e.target.value)} /></div>
-case 'Language':
-  return <>
-    <div><label className={labelClass}>Language</label>
-      <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>
-        <option value="">Select language</option>
-        {LANGUAGES.map(l => <option key={l}>{l}</option>)}
-      </select></div>
-    <div><label className={labelClass}>Proficiency level</label>
-      <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>
-        <option value="">Select level</option>
-        {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}
-      </select></div>
-  </>;
+        </>;
+
+      case 'Language':
+        return <>
+          <div><label className={labelClass}>Language</label>
+            <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>
+              <option value="">Select language</option>
+              {LANGUAGES.map(l => <option key={l}>{l}</option>)}
+            </select></div>
+          <div><label className={labelClass}>Proficiency level</label>
+            <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>
+              <option value="">Select level</option>
+              {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}
+            </select></div>
         </>;
 
       default: return null;
@@ -224,7 +225,7 @@ case 'Language':
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-medium text-white text-sm">
-                    {t.tab === 'Type Training' ? `${t.aircraft_type}${t.engine_type ? ' / ' + t.engine_type : ''}` : (t.title === 'Other' ? t.other_specify : t.title)}
+                    {t.tab === 'Type Training' ? `${t.aircraft_type}${t.engine_type ? ' / ' + t.engine_type : ''}` : t.tab === 'Language' ? `${t.language}${t.language_level ? ' — ' + t.language_level : ''}` : (t.title === 'Other' ? t.other_specify : t.title)}
                   </span>
                   {t.level && <span className="text-xs text-gray-400">{t.level}</span>}
                   {status && <span className={`text-xs px-2 py-0.5 rounded-full ${status.class}`}>{status.label}</span>}
