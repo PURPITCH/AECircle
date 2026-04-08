@@ -172,11 +172,11 @@ export const ExperienceSection: React.FC = () => {
             </div>
             <div>
               <label className={labelClass}>Company</label>
-              <input className={inputClass} placeholder="e.g. Emirates Airlines" value={form.company} onChange={e => set('company', e.target.value)} />
+              <input className={inputClass} placeholder="e.g. MY Airlines" value={form.company} onChange={e => set('company', e.target.value)} />
             </div>
             <div>
               <label className={labelClass}>Location</label>
-              <input className={inputClass} placeholder="e.g. Dubai, UAE" value={form.location} onChange={e => set('location', e.target.value)} />
+              <input className={inputClass} placeholder="e.g. London, UK" value={form.location} onChange={e => set('location', e.target.value)} />
             </div>
             <div>
               <label className={labelClass}>Department</label>
