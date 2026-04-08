@@ -123,7 +123,7 @@ export const ProjectsSection: React.FC = () => {
           </div>
           <div>
             <label className={labelClass}>Organisation / Company</label>
-            <input className={inputClass} placeholder="e.g. Mach Technik" value={form.organisation} onChange={e => set('organisation', e.target.value)} />
+            <input className={inputClass} placeholder="e.g. My Airlines" value={form.organisation} onChange={e => set('organisation', e.target.value)} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
