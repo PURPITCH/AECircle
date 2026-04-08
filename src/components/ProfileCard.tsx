@@ -4,6 +4,8 @@ import { supabase } from '../lib/supabase';
 import { ExperienceSection } from './ExperienceSection';
 import { LicenseSection } from './LicenseSection';
 import { TrainingSection } from './TrainingSection';
+import { ProjectsSection } from './ProjectsSection';
+import { AdditionalInfo } from './AdditionalInfo';
 import { Loader2, Wrench } from 'lucide-react';
 
 export const ProfileCard: React.FC<{ profile: any }> = () => {
@@ -110,6 +112,12 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
       </div>
 <div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
   <TrainingSection />
+</div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
+  <ProjectsSection />
+</div>
+<div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
+  <AdditionalInfo />
 </div>
       
     </div>
