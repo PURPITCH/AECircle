@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 
-const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate'];
+const TABS = ['Academic', 'Type Training', 'Continuous', 'Additional', 'Post Graduate', 'Language'];
 
 const CONTINUOUS_COURSES = [
   'Human Factors','Fuel Tank Safety','ETOPS','SMS','Part 145',
