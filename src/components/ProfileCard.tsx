@@ -6,7 +6,18 @@ import { LicenseSection } from './LicenseSection';
 import { TrainingSection } from './TrainingSection';
 import { ProjectsSection } from './ProjectsSection';
 import { AdditionalInfo } from './AdditionalInfo';
-import { Loader2, Wrench } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+
+const PremiumField: React.FC<{ icon: string; placeholder: string }> = ({ icon, placeholder }) => (
+  <div className="flex items-center gap-1.5 text-sm group relative cursor-pointer">
+    <span style={{ fontSize: '0.75em' }}>{icon}</span>
+    <span className="blur-sm select-none text-gray-400 group-hover:blur-md transition-all">{placeholder}</span>
+    <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs">🔒</span>
+    <div className="absolute left-0 top-6 hidden group-hover:block bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10 shadow-lg">
+      Upgrade to Premium to view
+    </div>
+  </div>
+);
 
 export const ProfileCard: React.FC<{ profile: any }> = () => {
   const navigate = useNavigate();
@@ -46,56 +57,80 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
   );
 
   const fullName = [profile.first_name, profile.last_name].filter(Boolean).join(' ');
-  const age = profile.date_of_birth ? Math.floor((Date.now() - new Date(profile.date_of_birth).getTime()) / 31557600000) : null;
-  const infoLine = [age ? `${age} years` : null, profile.citizenship, profile.sex].filter(Boolean).join(' · ');
+  const age = profile.date_of_birth
+    ? Math.floor((Date.now() - new Date(profile.date_of_birth).getTime()) / 31557600000)
+    : null;
+
+  const infoItems = [
+    profile.citizenship,
+    profile.residency_status,
+  ].filter(Boolean);
+
+  const physicalItems = [
+    age ? `${age} yrs` : null,
+    profile.sex,
+    profile.height ? `${profile.height}cm` : null,
+    profile.weight ? `${profile.weight}kg` : null,
+  ].filter(Boolean);
 
   return (
     <div className="max-w-4xl mx-auto space-y-4">
 
-      {/* Profile header */}
+      {/* Profile header card */}
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <div className="flex items-start gap-4">
+        <div className="flex gap-5">
 
           {/* Square photo */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 overflow-hidden">
-            {profile.photo_url
-              ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
-              : <span>{fullName.charAt(0).toUpperCase() || '?'}</span>
-            }
+          <div className="flex-shrink-0">
+            <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+              {profile.photo_url
+                ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
+                : <span>{fullName.charAt(0).toUpperCase() || '?'}</span>
+              }
+            </div>
           </div>
 
-          {/* Info */}
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-bold text-white">{fullName}</h1>
+          {/* Info column */}
+          <div className="flex-1 min-w-0 space-y-0.5">
+
+            <h1 className="text-xl font-bold text-white leading-tight">{fullName}</h1>
             <p className="text-blue-400 font-medium text-sm">{profile.designation}</p>
-            {infoLine && <p className="text-gray-400 text-sm mt-0.5">{infoLine}</p>}
-            {profile.residency_status && <p className="text-gray-500 text-sm">{profile.residency_status}</p>}
-            {profile.username && (
-              <a href={`/cv/${profile.username}`} className="text-blue-500 text-xs mt-1 hover:text-blue-400 block">
-                aircraft.engineer/cv/{profile.username}
-              </a>
+
+            {infoItems.length > 0 && (
+              <p className="text-gray-400 text-sm">{infoItems.join(' | ')}</p>
             )}
 
-            {/* Contact — stacked on mobile */}
-            <div className="flex flex-col sm:flex-row sm:gap-4 mt-2 gap-1">
-              <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                <span>📧</span>
-                <span className="blur-sm select-none text-gray-400">hidden@email.com</span>
-                <span className="text-blue-500 cursor-pointer hover:text-blue-400 no-blur">[Premium]</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                <span>📞</span>
-                <span className="blur-sm select-none text-gray-400">+000 000 0000</span>
-                <span className="text-blue-500 cursor-pointer hover:text-blue-400 no-blur">[Premium]</span>
-              </div>
+            {physicalItems.length > 0 && (
+              <p className="text-gray-500 text-sm">{physicalItems.join(' | ')}</p>
+            )}
+
+            {/* Contact — premium locked */}
+            <div className="pt-1 space-y-0.5">
+              <PremiumField icon="📞" placeholder="+971 XXX XXX XXX" />
+              <PremiumField icon="✉️" placeholder="email@example.com" />
             </div>
 
-            {/* Toolbox statement */}
+          </div>
+        </div>
+
+        {/* Below photo row */}
+        <div className="mt-3 space-y-1">
+          {profile.username && (
+            <a href={`/cv/${profile.username}`} className="text-blue-500 text-xs hover:text-blue-400 block">
+              aircraft.engineer/cv/{profile.username}
+            </a>
+          )}
+
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+            {profile.notice_period && (
+              <span>Notice: <span className="text-gray-300">{profile.notice_period}</span></span>
+            )}
+            {profile.notice_period && profile.has_tool_box && <span>·</span>}
             {profile.has_tool_box && (
-              <div className="flex items-center gap-1.5 mt-2">
-                <Wrench className="w-3.5 h-3.5 text-blue-400" />
-                <span className="text-xs text-gray-400">Has personal toolbox</span>
-              </div>
+              <span className="flex items-center gap-1">
+                <span style={{ fontSize: '0.85em' }}>🔧</span>
+                <span className="text-gray-300">Personal Toolbox</span>
+              </span>
             )}
           </div>
         </div>
@@ -110,16 +145,22 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
         <LicenseSection />
       </div>
-<div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
-  <TrainingSection />
-</div>
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
-  <ProjectsSection />
-</div>
-<div className="bg-gray-800 rounded-xl border border-gray-700 p-5 mb-4">
-  <AdditionalInfo />
-</div>
-      
+
+      {/* Training */}
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
+        <TrainingSection />
+      </div>
+
+      {/* Projects */}
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
+        <ProjectsSection />
+      </div>
+
+      {/* Additional Info */}
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
+        <AdditionalInfo />
+      </div>
+
     </div>
   );
 };
