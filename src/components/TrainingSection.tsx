@@ -189,7 +189,13 @@ export const TrainingSection: React.FC = () => {
             </select></div>
         </>;
 
-     case 'Language':         return <>           <div><label className={labelClass}>Language</label>             <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>               <option value="">Select language</option>               {LANGUAGES.map(l => <option key={l}>{l}</option>)}             </select></div>           <div><label className={labelClass}>Proficiency level</label>             <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>               <option value="">Select level</option>               {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}             </select></div>         </>;
+     case 'Language':         return <>           <div><label className={labelClass}>Language</label>             
+       <select className={inputClass} value={form.language} onChange={e => set('language', e.target.value)}>               
+         <option value="">Select language</option>               {LANGUAGES.map(l => <option key={l}>{l}</option>)}             
+       </select></div>           <div><label className={labelClass}>Proficiency level</label>             
+         <select className={inputClass} value={form.language_level} onChange={e => set('language_level', e.target.value)}>              
+           <option value="">Select level</option>               {LANG_LEVELS.map(l => <option key={l}>{l}</option>)}             
+         </select></div>         </>;
     }
   };
 
