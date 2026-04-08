@@ -16,6 +16,7 @@ function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +24,10 @@ function NavBar() {
       if (data.user) setUserEmail(data.user.email || '');
     });
   }, []);
-
+useEffect(() => {
+    document.documentElement.classList.toggle('light-mode', !darkMode);
+  }, [darkMode]);
+  
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -83,6 +87,16 @@ function NavBar() {
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
                   <KeyRound className="w-4 h-4" /> Edit profile
                 </button>
+                <div className="border-t border-gray-700" />
+                <div className="flex items-center justify-between px-4 py-2.5">
+                  <span className="text-sm text-gray-300 flex items-center gap-2">
+                    {darkMode ? '🌙' : '☀️'} {darkMode ? 'Dark mode' : 'Light mode'}
+                  </span>
+                  <button onClick={() => setDarkMode(!darkMode)}
+                    className={`relative w-10 h-5 rounded-full transition-colors ${darkMode ? 'bg-blue-600' : 'bg-gray-500'}`}>
+                    <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${darkMode ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                  </button>
+                </div>
                 <div className="border-t border-gray-700" />
                 <button onClick={() => setMenuOpen(false)}
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
