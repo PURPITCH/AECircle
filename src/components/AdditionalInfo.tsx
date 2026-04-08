@@ -74,39 +74,38 @@ export const AdditionalInfo: React.FC = () => {
       {/* Display view */}
       {!isEditing && hasData && (
         <div className="space-y-2 text-sm">
-          {form.availability && (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 w-36">Status</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                form.availability === 'Actively looking' ? 'bg-green-500/20 text-green-400' :
-                form.availability === 'Open to offers' ? 'bg-blue-500/20 text-blue-400' :
-                'bg-gray-500/20 text-gray-400'}`}>
-                {form.availability}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            {form.availability && (
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-500">Status</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                  form.availability === 'Actively looking' ? 'bg-green-500/20 text-green-400' :
+                  form.availability === 'Open to offers' ? 'bg-blue-500/20 text-blue-400' :
+                  'bg-gray-500/20 text-gray-400'}`}>
+                  {form.availability}
+                </span>
               </span>
-            </div>
-          )}
-          {form.notice_period && (
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 w-36">Notice period</span>
-              <span className="text-gray-300">{form.notice_period}</span>
-            </div>
-          )}
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500 w-36">Willing to relocate</span>
-            <span className="text-gray-300">{form.willing_to_relocate ? 'Yes' : 'No'}</span>
+            )}
+            {form.notice_period && (
+              <span className="flex items-center gap-1.5">
+                <span className="text-gray-500">Notice</span>
+                <span className="text-gray-300">{form.notice_period}</span>
+              </span>
+            )}
+            <span className="flex items-center gap-1.5">
+              <span className="text-gray-500">Relocation</span>
+              <span className="text-gray-300">{form.willing_to_relocate ? 'Yes' : 'No'}</span>
+            </span>
           </div>
           {form.willing_to_relocate && form.preferred_locations && (
             <div className="flex items-start gap-2">
-              <span className="text-gray-500 w-36">Preferred locations</span>
+              <span className="text-gray-500">Preferred locations</span>
               <span className="text-gray-300">{form.preferred_locations}</span>
             </div>
           )}
         </div>
       )}
-
-      {!isEditing && !hasData && (
-        <p className="text-gray-500 text-sm">No additional information added yet</p>
-      )}
+ 
 
       {/* Edit form */}
       {isEditing && (
