@@ -192,7 +192,7 @@ export const ExperienceSection: React.FC = () => {
             )}
             <div className="col-span-2">
               <label className={labelClass}>Aircraft types <span className="text-gray-600">(or N/A)</span></label>
-              <input className={inputClass} placeholder="e.g. B737-800, A320-200" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
+              <input className={inputClass} placeholder="e.g. B737-800/CFM56, A320-200/CFM56" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
             </div>
             <div>
               <label className={labelClass}>Start date</label>
