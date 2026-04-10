@@ -73,7 +73,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
 
   const bottomLine = [
     profile.notice_period ? `Notice: ${profile.notice_period}` : null,
-    profile.has_tool_box ? '🔧 Personal Toolbox' : null,
+    profile.has_tool_box ? '🔧 Toolbox' : null,
     profile.location ? `📍 ${profile.location}` : null,
   ].filter(Boolean);
 
