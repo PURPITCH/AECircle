@@ -85,7 +85,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
 
           {/* Photo */}
           <div className="flex-shrink-0">
-            <div className="w-24 rounded-lg bg-blue-600 self-stretch flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+            <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
               {profile.photo_url
                 ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
                 : <span>{fullName.charAt(0).toUpperCase() || '?'}</span>
@@ -118,9 +118,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
               {bottomLine.map((item, i) => (
                 <React.Fragment key={i}>
                   {i > 0 && <span className="text-gray-600">|</span>}
-                  <span style={{ color: item?.startsWith('🔧') || item?.startsWith('📍') ? '#3b82f6' : undefined }}>
-                    {item}
-                  </span>
+                  <span>{item}</span>
                 </React.Fragment>
               ))}
             </div>
