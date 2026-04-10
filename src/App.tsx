@@ -8,6 +8,7 @@ import { ProfileCard } from './components/ProfileCard';
 import { CreateProfile } from './components/CreateProfile';
 import { supabase } from './lib/supabase';
 import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, EyeOff, Trash2, LogOut, Menu, X } from 'lucide-react';
+import { PublicCV } from './components/PublicCV';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -216,6 +217,7 @@ function App() {
         <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
+        <Route path="/cv/:username" element={<PublicCV />} />
       </Routes>
     </BrowserRouter>
   );
