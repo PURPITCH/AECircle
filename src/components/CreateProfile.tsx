@@ -20,6 +20,7 @@ export const CreateProfile: React.FC = () => {
     has_tool_box: false,
     username_handle: '',
     location: '',
+    phone: '',
   });
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export const CreateProfile: React.FC = () => {
             has_tool_box: data.has_tool_box || false,
             username_handle: data.username_handle || '',
             location: data.location || '',
+            phone: data.phone || '',
           });
         }
       } catch (err) {
@@ -106,6 +108,7 @@ export const CreateProfile: React.FC = () => {
           username: username,
           username_handle: handle,
           location: form.location || null,
+          phone: form.phone || null,
           updated_at: new Date().toISOString(),
         });
 
@@ -191,7 +194,15 @@ export const CreateProfile: React.FC = () => {
             <input type="number" name="weight" value={form.weight} onChange={handleChange} className={inputClass} placeholder="80" />
           </div>
         </div>
-
+<div>
+          <label className={labelClass}>Location <span className="text-gray-500 text-xs">(max 20 chars — e.g. London, UK)</span></label>
+          <input type="text" name="location" value={form.location} onChange={handleChange} className={inputClass} placeholder="e.g. London, UK" maxLength={20} />
+          <p className="text-xs text-gray-600 mt-1">{form.location?.length || 0}/20</p>
+        </div>
+        <div>
+          <label className={labelClass}>Phone number</label>
+          <input type="text" name="phone" value={form.phone || ''} onChange={handleChange} className={inputClass} placeholder="e.g. +971 50 123 4567" />
+        </div>
         <div className="flex items-center gap-3">
           <input type="checkbox" name="has_tool_box" id="toolbox" checked={form.has_tool_box} onChange={handleChange} className="w-4 h-4 rounded bg-gray-700 border-gray-600 text-blue-500" />
           <label htmlFor="toolbox" className="text-gray-300 text-sm">I have my own toolbox</label>
