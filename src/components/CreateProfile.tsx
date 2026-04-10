@@ -19,6 +19,7 @@ export const CreateProfile: React.FC = () => {
     weight: '',
     has_tool_box: false,
     username_handle: '',
+    location: '',
   });
 
   useEffect(() => {
@@ -46,6 +47,7 @@ export const CreateProfile: React.FC = () => {
             weight: data.weight?.toString() || '',
             has_tool_box: data.has_tool_box || false,
             username_handle: data.username_handle || '',
+            location: data.location || '',
           });
         }
       } catch (err) {
@@ -103,6 +105,7 @@ export const CreateProfile: React.FC = () => {
           has_tool_box: form.has_tool_box,
           username: username,
           username_handle: handle,
+          location: form.location || null,
           updated_at: new Date().toISOString(),
         });
 
@@ -155,11 +158,11 @@ export const CreateProfile: React.FC = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Nationality</label>
-            <input type="text" name="nationality" value={form.nationality} onChange={handleChange} className={inputClass} placeholder="e.g. British" />
+            <input type="text" name="nationality" value={form.nationality} onChange={handleChange} className={inputClass} placeholder="e.g. British" maxLength={30} />
           </div>
           <div>
             <label className={labelClass}>Resident status</label>
-            <input type="text" name="resident_status" value={form.resident_status} onChange={handleChange} className={inputClass} placeholder="e.g. UAE Resident" />
+            <input type="text" name="resident_status" value={form.resident_status} onChange={handleChange} className={inputClass} placeholder="e.g. UAE Resident" maxLength={30} />
           </div>
         </div>
 
