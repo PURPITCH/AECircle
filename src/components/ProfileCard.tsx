@@ -8,9 +8,11 @@ import { ProjectsSection } from './ProjectsSection';
 import { AdditionalInfo } from './AdditionalInfo';
 import { Loader2 } from 'lucide-react';
 
+const iconStyle = { fontSize: '0.8em', color: '#3b82f6' };
+
 const PremiumField: React.FC<{ icon: string; placeholder: string }> = ({ icon, placeholder }) => (
   <div className="flex items-center gap-1.5 text-sm group relative cursor-pointer">
-    <span style={{ fontSize: '0.75em' }}>{icon}</span>
+    <span style={iconStyle}>{icon}</span>
     <span className="blur-sm select-none text-gray-400 group-hover:blur-md transition-all">{placeholder}</span>
     <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs">🔒</span>
     <div className="absolute left-0 top-6 hidden group-hover:block bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10 shadow-lg">
@@ -61,11 +63,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
     ? Math.floor((Date.now() - new Date(profile.date_of_birth).getTime()) / 31557600000)
     : null;
 
-  const infoItems = [
-    profile.citizenship,
-    profile.residency_status,
-  ].filter(Boolean);
-
+  const infoItems = [profile.citizenship, profile.residency_status].filter(Boolean);
   const physicalItems = [
     age ? `${age} yrs` : null,
     profile.sex,
@@ -73,14 +71,19 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
     profile.weight ? `${profile.weight}kg` : null,
   ].filter(Boolean);
 
+  const bottomLine = [
+    profile.notice_period ? `Notice: ${profile.notice_period}` : null,
+    profile.has_tool_box ? '🔧 Personal Toolbox' : null,
+    profile.location ? `📍 ${profile.location}` : null,
+  ].filter(Boolean);
+
   return (
     <div className="max-w-4xl mx-auto space-y-4">
 
-      {/* Profile header card */}
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
         <div className="flex gap-5">
 
-          {/* Square photo */}
+          {/* Photo */}
           <div className="flex-shrink-0">
             <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
               {profile.photo_url
@@ -90,77 +93,46 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
             </div>
           </div>
 
-          {/* Info column */}
+          {/* Info */}
           <div className="flex-1 min-w-0 space-y-0.5">
-
             <h1 className="text-xl font-bold text-white leading-tight">{fullName}</h1>
             <p className="text-blue-400 font-medium text-sm">{profile.designation}</p>
-
-            {infoItems.length > 0 && (
-              <p className="text-gray-400 text-sm">{infoItems.join(' | ')}</p>
-            )}
-
-            {physicalItems.length > 0 && (
-              <p className="text-gray-500 text-sm">{physicalItems.join(' | ')}</p>
-            )}
-
-            {/* Contact — premium locked */}
+            {infoItems.length > 0 && <p className="text-gray-400 text-sm">{infoItems.join(' | ')}</p>}
+            {physicalItems.length > 0 && <p className="text-gray-500 text-sm">{physicalItems.join(' | ')}</p>}
             <div className="pt-1 space-y-0.5">
               <PremiumField icon="📞" placeholder="+971 XXX XXX XXX" />
               <PremiumField icon="✉️" placeholder="email@example.com" />
             </div>
-
           </div>
         </div>
 
-        {/* Below photo row */}
+        {/* Bottom row */}
         <div className="mt-3 space-y-1">
           {profile.username && (
             <a href={`/cv/${profile.username}`} className="text-blue-500 text-xs hover:text-blue-400 block">
               aircraft.engineer/cv/{profile.username}
             </a>
           )}
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
-            {profile.notice_period && (
-              <span>Notice: <span className="text-gray-300">{profile.notice_period}</span></span>
-            )}
-            {profile.notice_period && profile.has_tool_box && <span>·</span>}
-            {profile.has_tool_box && (
-              <span className="flex items-center gap-1">
-                <span style={{ fontSize: '0.85em' }}>🔧</span>
-                <span className="text-gray-300">Personal Toolbox</span>
-              </span>
-            )}
-          </div>
+          {bottomLine.length > 0 && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-400">
+              {bottomLine.map((item, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && <span className="text-gray-600">|</span>}
+                  <span style={{ color: item?.startsWith('🔧') || item?.startsWith('📍') ? '#3b82f6' : undefined }}>
+                    {item}
+                  </span>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Experience */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <ExperienceSection />
-      </div>
-
-      {/* Licenses */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <LicenseSection />
-      </div>
-
-      {/* Training */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <TrainingSection />
-      </div>
-
-      {/* Projects */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <ProjectsSection />
-      </div>
-
-      {/* Additional Info */}
-      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
-        <AdditionalInfo />
-      </div>
-
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><ExperienceSection /></div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><LicenseSection /></div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><TrainingSection /></div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><ProjectsSection /></div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><AdditionalInfo /></div>
     </div>
   );
 };
