@@ -105,10 +105,11 @@ export const CreateProfile: React.FC = () => {
           height: form.height ? Number(form.height) : null,
           weight: form.weight ? Number(form.weight) : null,
           has_tool_box: form.has_tool_box,
-          username: username,
+         username: username,
           username_handle: handle,
           location: form.location || null,
           phone: form.phone || null,
+          email: user.email,
           updated_at: new Date().toISOString(),
         });
 
