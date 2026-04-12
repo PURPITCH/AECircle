@@ -7,6 +7,7 @@ import { TrainingSection } from './TrainingSection';
 import { ProjectsSection } from './ProjectsSection';
 import { AdditionalInfo } from './AdditionalInfo';
 import { Loader2 } from 'lucide-react';
+import { PhotoUpload } from './PhotoUpload';
 
 const iconStyle = { fontSize: '0.8em', color: '#3b82f6' };
 
@@ -73,7 +74,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
 
   const bottomLine = [
     profile.notice_period ? `Notice: ${profile.notice_period}` : null,
-    profile.has_tool_box ? '🔧 Toolbox' : null,
+    profile.has_tool_box ? '🔧 Personal Toolbox' : null,
     profile.location ? `📍 ${profile.location}` : null,
   ].filter(Boolean);
 
@@ -85,7 +86,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
 
           {/* Photo */}
           <div className="flex-shrink-0">
-            <div className="w-36 h-36 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+            <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
               {profile.photo_url
                 ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
                 : <span>{fullName.charAt(0).toUpperCase() || '?'}</span>
@@ -118,7 +119,9 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
               {bottomLine.map((item, i) => (
                 <React.Fragment key={i}>
                   {i > 0 && <span className="text-gray-600">|</span>}
-                  <span>{item}</span>
+                  <span style={{ color: item?.startsWith('🔧') || item?.startsWith('📍') ? '#3b82f6' : undefined }}>
+                    {item}
+                  </span>
                 </React.Fragment>
               ))}
             </div>
