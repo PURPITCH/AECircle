@@ -120,47 +120,48 @@ export const PublicCV: React.FC = () => {
       {/* CV Document */}
       <div className="max-w-3xl mx-auto bg-white my-6 print:my-0 shadow-sm print:shadow-none p-8 print:p-6">
 
-        {/* Header */}
-        <div className="flex gap-5 mb-6 pb-5 border-b border-gray-200">
-          <div className="w-36 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 overflow-hidden self-stretch">
-            {profile.photo_url
-              ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
-              : <span>{fullName.charAt(0).toUpperCase()}</span>
-            }
-          </div>
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-900">{fullName}</h1>
-            <p className="text-blue-600 font-medium">{profile.designation}</p>
-            {infoItems.length > 0 && <p className="text-gray-600 text-sm mt-0.5">{infoItems.join(' | ')}</p>}
-            {physicalItems.length > 0 && <p className="text-gray-500 text-sm">{physicalItems.join(' | ')}</p>}
-
-            {/* Contact */}
-            <div className="mt-2 space-y-0.5">
-              {isOwner ? (
-                <>
-                  {profile.phone && <p className="text-sm text-gray-600">📞 {profile.phone}</p>}
-                  <p className="text-sm text-gray-600">✉️ {profile.email || 'Add email in profile'}</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-sm text-gray-400 flex items-center gap-1">📞 <span className="blur-sm">+000 000 0000</span> <span className="text-blue-500 text-xs no-blur ml-1">[Premium]</span></p>
-                  <p className="text-sm text-gray-400 flex items-center gap-1">✉️ <span className="blur-sm">email@example.com</span> <span className="text-blue-500 text-xs no-blur ml-1">[Premium]</span></p>
-                </>
-              )}
+     {/* Header */}
+        <div className="mb-6 pb-5 border-b border-gray-200">
+          <div className="flex gap-5">
+            <div className="w-36 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 overflow-hidden self-stretch">
+              {profile.photo_url
+                ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
+                : <span>{fullName.charAt(0).toUpperCase()}</span>
+              }
             </div>
-
-            {/* Bottom line */}
-            <div className="flex flex-wrap gap-x-3 mt-2 text-xs text-gray-500">
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold text-gray-900">{fullName}</h1>
+              <p className="text-blue-600 font-medium">{profile.designation}</p>
+              {infoItems.length > 0 && <p className="text-gray-600 text-sm mt-0.5">{infoItems.join(' | ')}</p>}
+              {physicalItems.length > 0 && <p className="text-gray-500 text-sm">{physicalItems.join(' | ')}</p>}
+              <div className="mt-2 space-y-0.5">
+                {isOwner ? (
+                  <>
+                    {profile.phone && <p className="text-sm text-gray-600">📞 {profile.phone}</p>}
+                    {profile.email && <p className="text-sm text-gray-600">✉️ {profile.email}</p>}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm text-gray-400 flex items-center gap-1">📞 <span className="blur-sm">+000 000 0000</span> <span className="text-blue-500 text-xs ml-1">[Premium]</span></p>
+                    <p className="text-sm text-gray-400 flex items-center gap-1">✉️ <span className="blur-sm">email@example.com</span> <span className="text-blue-500 text-xs ml-1">[Premium]</span></p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 space-y-1">
+            <a href={`/cv/${profile.username}`} className="text-blue-400 text-xs hover:text-blue-500 block">
+              aircraft.engineer/cv/{profile.username}
+            </a>
+            <div className="flex flex-wrap gap-x-3 text-xs text-gray-500">
               {profile.notice_period && <span>Notice: {profile.notice_period}</span>}
               {profile.has_tool_box && <span>🔧 Toolbox</span>}
               {profile.location && <span>📍 {profile.location}</span>}
             </div>
-
-            <p className="text-xs text-blue-400 mt-1">aircraft.engineer/cv/{profile.username}</p>
           </div>
         </div>
 
-        {/* Experience */}
+               {/* Experience */}
         {Object.keys(grouped).length > 0 && (
           <Section title="Experience">
             {Object.entries(grouped).map(([category, items]) => (
