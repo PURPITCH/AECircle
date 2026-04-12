@@ -122,7 +122,7 @@ export const PublicCV: React.FC = () => {
 
         {/* Header */}
         <div className="flex gap-5 mb-6 pb-5 border-b border-gray-200">
-          <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 overflow-hidden">
+          <div className="w-36 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold flex-shrink-0 overflow-hidden self-stretch">
             {profile.photo_url
               ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
               : <span>{fullName.charAt(0).toUpperCase()}</span>
