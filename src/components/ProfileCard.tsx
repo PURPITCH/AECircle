@@ -84,15 +84,13 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5">
         <div className="flex gap-5">
 
-          {/* Photo */}
-          <div className="flex-shrink-0">
-            <div className="w-24 h-24 rounded-lg bg-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
-              {profile.photo_url
-                ? <img src={profile.photo_url} alt={fullName} className="w-full h-full object-cover" />
-                : <span>{fullName.charAt(0).toUpperCase() || '?'}</span>
-              }
-            </div>
-          </div>
+          {/* Photo — clickable upload */}
+          <PhotoUpload
+            userId={profile.id}
+            currentPhotoUrl={profile.photo_url}
+            fullName={fullName}
+            onUploadComplete={(url) => setProfile({ ...profile, photo_url: url })}
+          />
 
           {/* Info */}
           <div className="flex-1 min-w-0 space-y-0.5">
