@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Plus, Trash2, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
 
-const DEPARTMENTS = ['Line','Base','Line & Base','Workshop','Tech Pub','Planning','Compliance','Safety','Stores / Logistics','Other'];
+const DEPARTMENTS = ['Line','Base','Line & Base','Workshop','NDT','Training','Tech Pub','Planning','Compliance','Safety','Stores / Logistics','Other'];
 const CATEGORIES = ['Certifying','Non-Certifying','Post Holder','Auditing'];
 const SECTION_ORDER = ['Post Holder','Certifying','Non-Certifying','Auditing'];
 
@@ -191,9 +191,8 @@ export const ExperienceSection: React.FC = () => {
               </div>
             )}
             <div className="col-span-2">
-              <label className={labelClass}>Aircraft types <span className="text-gray-600">(or N/A)</span></label>
-              <input className={inputClass} placeholder="e.g. B737-800/CFM56, A320-200/CFM56" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
-            </div>
+             <label className={labelClass}>Aircraft / Component type <span className="text-gray-600">(or N/A)</span></label>
+<input className={inputClass} placeholder="e.g. B737-800/CFM56-7B, Landing Gear, APU" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
             <div>
               <label className={labelClass}>Start date</label>
               <input type="date" className={inputClass} value={form.start_date} onChange={e => set('start_date', e.target.value)} />
