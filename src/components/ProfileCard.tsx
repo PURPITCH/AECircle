@@ -8,6 +8,7 @@ import { ProjectsSection } from './ProjectsSection';
 import { AdditionalInfo } from './AdditionalInfo';
 import { Loader2 } from 'lucide-react';
 import { PhotoUpload } from './PhotoUpload';
+import { PrivacySettings } from './PrivacySettings';
 
 const iconStyle = { fontSize: '0.8em', color: '#3b82f6' };
 
@@ -132,6 +133,7 @@ export const ProfileCard: React.FC<{ profile: any }> = () => {
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><TrainingSection /></div>
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><ProjectsSection /></div>
       <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><AdditionalInfo /></div>
+      <div className="bg-gray-800 rounded-xl border border-gray-700 p-5"><PrivacySettings /></div>
     </div>
   );
 };
