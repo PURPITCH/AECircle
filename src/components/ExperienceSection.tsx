@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { Plus, Trash2, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, ChevronDown, ChevronUp } from 'lucide-react';
 
 const DEPARTMENTS = ['Line','Base','Line & Base','Workshop','NDT','Training','Tech Pub','Planning','Compliance','Safety','Stores / Logistics','Other'];
 const CATEGORIES = ['Certifying','Non-Certifying','Post Holder','Auditing'];
@@ -85,10 +85,8 @@ export const ExperienceSection: React.FC = () => {
   };
 
   const set = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }));
-
   const formatDate = (d: string) => d ? new Date(d).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : '';
 
-  // Group by category in defined order
   const grouped = SECTION_ORDER.reduce((acc, cat) => {
     const items = experiences.filter(e => e.category === cat);
     if (items.length > 0) acc[cat] = items;
@@ -98,18 +96,15 @@ export const ExperienceSection: React.FC = () => {
   return (
     <div className="mt-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold flex items-center gap-2 text-blue-400">
-         Experience
-        </h2>
+        <h2 className="text-lg font-semibold text-blue-400">Experience</h2>
         {!isAdding && (
           <button onClick={() => { setIsAdding(true); setEditingId(null); setForm(empty()); }}
             className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
-            <Plus className="w-4 h-4" /> Add 
+            <Plus className="w-4 h-4" /> Add
           </button>
         )}
       </div>
 
-      {/* Grouped display */}
       {Object.entries(grouped).map(([category, items]) => (
         <div key={category} className="mb-5">
           <h3 className="text-sm font-medium text-gray-400 mb-2 flex items-center gap-2">
@@ -141,7 +136,7 @@ export const ExperienceSection: React.FC = () => {
               {expandedId === exp.id && (
                 <div className="px-4 py-3 text-sm text-gray-300 space-y-1">
                   <p><span className="text-gray-500">Department:</span> {exp.department === 'Other' ? exp.department_other : exp.department}</p>
-                  {exp.aircraft_types && <p><span className="text-gray-500">Aircraft:</span> {exp.aircraft_types}</p>}
+                  {exp.aircraft_types && <p><span className="text-gray-500">Aircraft / Component:</span> {exp.aircraft_types}</p>}
                   {exp.certifying_tasks > 0 && <p><span className="text-gray-500">Certifying tasks:</span> {exp.certifying_tasks}</p>}
                 </div>
               )}
@@ -154,11 +149,9 @@ export const ExperienceSection: React.FC = () => {
         <p className="text-gray-500 text-sm">No experience added yet</p>
       )}
 
-      {/* Add/Edit form */}
       {isAdding && (
         <div className="border border-blue-500/30 rounded-lg p-5 bg-gray-800/50">
           <h3 className="text-sm font-medium text-blue-400 mb-4">{editingId ? 'Edit experience' : 'Add experience'}</h3>
-
           <div className="grid grid-cols-2 gap-3 mb-3">
             <div className="col-span-2 md:col-span-1">
               <label className={labelClass}>Role / Position</label>
@@ -191,8 +184,9 @@ export const ExperienceSection: React.FC = () => {
               </div>
             )}
             <div className="col-span-2">
-             <label className={labelClass}>Aircraft / Component type <span className="text-gray-600">(or N/A)</span></label>
-<input className={inputClass} placeholder="e.g. B737-800/CFM56-7B, Landing Gear, APU" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
+              <label className={labelClass}>Aircraft / Component type <span className="text-gray-600">(or N/A)</span></label>
+              <input className={inputClass} placeholder="e.g. B737-800/CFM56-7B, Landing Gear, APU" value={form.aircraft_types} onChange={e => set('aircraft_types', e.target.value)} />
+            </div>
             <div>
               <label className={labelClass}>Start date</label>
               <input type="date" className={inputClass} value={form.start_date} onChange={e => set('start_date', e.target.value)} />
@@ -212,7 +206,6 @@ export const ExperienceSection: React.FC = () => {
               </div>
             )}
           </div>
-
           <div className="flex gap-3 mt-4">
             <button onClick={handleSave} disabled={saving}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
