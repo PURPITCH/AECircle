@@ -91,7 +91,7 @@ useEffect(() => {
                   <KeyRound className="w-4 h-4" /> Edit profile
                 </button>
                 <div className="border-t border-gray-700" />
-               <div className="flex items-center justify-between px-4 py-2.5">
+                <div className="flex items-center justify-between px-4 py-2.5">
                   <span className="text-sm text-gray-300 flex items-center gap-2">
                     {darkMode ? '🌙' : '🌟'} {darkMode ? 'Dark mode' : 'Light mode'}
                   </span>
@@ -100,6 +100,16 @@ useEffect(() => {
                     <span className={`inline-block w-4 h-4 mt-0.5 bg-white rounded-full shadow transform transition-transform duration-200 ${darkMode ? 'translate-x-5' : 'translate-x-0.5'}`} />
                   </button>
                 </div>
+                <div className="border-t border-gray-700" />
+                <button onClick={() => { navigate('/account-settings'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <Settings className="w-4 h-4" /> Account settings
+                </button>
+                <div className="border-t border-gray-700" />
+                <button onClick={handleSignOut}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <LogOut className="w-4 h-4" /> Sign out
+                </button>
                 <div className="border-t border-gray-700" />
                 <button onClick={() => setMenuOpen(false)}
                   className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
