@@ -13,14 +13,14 @@ interface AdditionalInfoData {
   driving_license_country: string;
 }
 
- const empty = (): AdditionalInfoData => ({
-    availability: '',
-    notice_period: '',
-    willing_to_relocate: false,
-    preferred_locations: '',
-    driving_license_category: '',
-    driving_license_country: '',
-  });
+const empty = (): AdditionalInfoData => ({
+  availability: '',
+  notice_period: '',
+  willing_to_relocate: false,
+  preferred_locations: '',
+  driving_license_category: '',
+  driving_license_country: '',
+});
 
 const inputClass = "block w-full rounded-md bg-gray-700 border border-gray-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 const labelClass = "block text-xs font-medium text-gray-400 mb-1";
@@ -36,7 +36,9 @@ export const AdditionalInfo: React.FC = () => {
   const fetchData = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
-    const { data } = await supabase.from('profiles').select('availability, notice_period, willing_to_relocate, preferred_locations').eq('id', user.id).maybeSingle();
+    const { data } = await supabase.from('profiles')
+      .select('availability, notice_period, willing_to_relocate, preferred_locations, driving_license_category, driving_license_country')
+      .eq('id', user.id).maybeSingle();
     if (data) {
       setForm({
         availability: data.availability || '',
@@ -46,7 +48,7 @@ export const AdditionalInfo: React.FC = () => {
         driving_license_category: data.driving_license_category || '',
         driving_license_country: data.driving_license_country || '',
       });
-      setHasData(!!(data.availability || data.notice_period));
+      setHasData(!!(data.availability || data.notice_period || data.driving_license_category));
     }
   };
 
@@ -62,13 +64,6 @@ export const AdditionalInfo: React.FC = () => {
       alert('Error: ' + err.message);
     } finally { setSaving(false); }
   };
-
-     {form.driving_license_category && (
-            <span className="flex items-center gap-1.5">
-              <span className="text-gray-500">Driving license</span>
-              <span className="text-gray-300">{form.driving_license_category} — {form.driving_license_country}</span>
-            </span>
-          )}
 
   const set = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -116,9 +111,18 @@ export const AdditionalInfo: React.FC = () => {
               <span className="text-gray-300">{form.preferred_locations}</span>
             </div>
           )}
+          {form.driving_license_category && (
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500">Driving license</span>
+              <span className="text-gray-300">{form.driving_license_category}{form.driving_license_country ? ` — ${form.driving_license_country}` : ''}</span>
+            </div>
+          )}
         </div>
       )}
- 
+
+      {!isEditing && !hasData && (
+        <p className="text-gray-500 text-sm">No additional information added yet</p>
+      )}
 
       {/* Edit form */}
       {isEditing && (
@@ -147,6 +151,16 @@ export const AdditionalInfo: React.FC = () => {
               <input className={inputClass} placeholder="e.g. Dubai, UK, Singapore" value={form.preferred_locations} onChange={e => set('preferred_locations', e.target.value)} />
             </div>
           )}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelClass}>Driving license category</label>
+              <input className={inputClass} placeholder="e.g. B, C, D" value={form.driving_license_category} onChange={e => set('driving_license_category', e.target.value)} maxLength={10} />
+            </div>
+            <div>
+              <label className={labelClass}>Issuing country</label>
+              <input className={inputClass} placeholder="e.g. UAE" value={form.driving_license_country} onChange={e => set('driving_license_country', e.target.value)} maxLength={30} />
+            </div>
+          </div>
           <div className="flex gap-3 pt-2">
             <button onClick={handleSave} disabled={saving}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
@@ -157,17 +171,7 @@ export const AdditionalInfo: React.FC = () => {
               Cancel
             </button>
           </div>
-            <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className={labelClass}>Driving license category</label>
-              <input className={inputClass} placeholder="e.g. B, C, D" value={form.driving_license_category} onChange={e => set('driving_license_category', e.target.value)} maxLength={10} />
-            </div>
-            <div>
-              <label className={labelClass}>Issuing country</label>
-              <input className={inputClass} placeholder="e.g. UAE" value={form.driving_license_country} onChange={e => set('driving_license_country', e.target.value)} maxLength={30} />
-            </div>
-          </div>
-                  </div>
+        </div>
       )}
     </div>
   );
