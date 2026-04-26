@@ -6,11 +6,11 @@ import { ResetPassword } from './components/ResetPassword';
 import { AuthCallback } from './components/AuthCallback';
 import { ProfileCard } from './components/ProfileCard';
 import { CreateProfile } from './components/CreateProfile';
-import { supabase } from './lib/supabase';
-import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
 import { PublicCV } from './components/PublicCV';
 import { AccountSettings } from './components/AccountSettings';
 import { ChangeEmail } from './components/ChangeEmail';
+import { supabase } from './lib/supabase';
+import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -27,15 +26,15 @@ function NavBar() {
       if (data.user) setUserEmail(data.user.email || '');
     });
   }, []);
-useEffect(() => {
+
+  useEffect(() => {
     document.documentElement.classList.toggle('light-mode', !darkMode);
   }, [darkMode]);
-  
+
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setMenuOpen(false);
-        setDeleteConfirm(false);
       }
     };
     document.addEventListener('mousedown', handleClick);
@@ -57,12 +56,6 @@ useEffect(() => {
     navigate('/');
   };
 
-  const handleDeleteAccount = async () => {
-    if (!deleteConfirm) { setDeleteConfirm(true); return; }
-    await supabase.auth.signOut();
-    navigate('/');
-  };
-
   return (
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4">
@@ -70,13 +63,13 @@ useEffect(() => {
 
           {/* Logo — clicking opens dropdown */}
           <div className="relative flex-shrink-0" ref={menuRef}>
-            <button onClick={() => { setMenuOpen(!menuOpen); setDeleteConfirm(false); }}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Plane className="h-6 w-6 text-blue-500" />
               <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
             </button>
 
-            {/* Dropdown under logo */}
             {menuOpen && (
               <div className="absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-700">
@@ -112,8 +105,9 @@ useEffect(() => {
                 </button>
               </div>
             )}
-        
-          {/* Search bar — centered */}
+          </div>
+
+          {/* Search bar */}
           <div className="flex-1 max-w-sm mx-auto">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -122,7 +116,7 @@ useEffect(() => {
             </div>
           </div>
 
-          {/* Desktop nav links */}
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navItem('/cv', 'CV', User)}
             {navItem('/jobs', 'Jobs', Briefcase)}
@@ -197,13 +191,13 @@ function App() {
         <Route path="/auth/callback" element={<AuthCallback />} />
         <Route path="/cv" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/create" element={<ProtectedRoute><AppLayout><CreateProfile /></AppLayout></ProtectedRoute>} />
+        <Route path="/cv/:username" element={<PublicCV />} />
         <Route path="/jobs" element={<ProtectedRoute><AppLayout><ComingSoon title="Aviation Jobs" /></AppLayout></ProtectedRoute>} />
         <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
-        <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
-        <Route path="/cv/:username" element={<PublicCV />} />
         <Route path="/account-settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
-<Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
+        <Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
+        <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
