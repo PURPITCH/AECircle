@@ -9,6 +9,8 @@ import { CreateProfile } from './components/CreateProfile';
 import { supabase } from './lib/supabase';
 import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, EyeOff, Trash2, LogOut, Menu, X } from 'lucide-react';
 import { PublicCV } from './components/PublicCV';
+import { AccountSettings } from './components/AccountSettings';
+import { ChangeEmail } from './components/ChangeEmail';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -218,6 +220,8 @@ function App() {
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/:username" element={<PublicCV />} />
+        <Route path="/account-settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
+<Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
