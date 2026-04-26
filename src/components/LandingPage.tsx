@@ -153,16 +153,21 @@ export const LandingPage: React.FC = () => {
                 )}
               </div>
 
-              <div className="flex items-center">
-                <input
-                  {...register('rememberMe')}
-                  type="checkbox"
-                  className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-800"
-                  disabled={isLoading}
-                />
-                <label className="ml-2 block text-sm text-gray-300">
-                  Keep me logged in
-                </label>
+             <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    {...register('rememberMe')}
+                    type="checkbox"
+                    className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-800"
+                    disabled={isLoading}
+                  />
+                  <label className="ml-2 block text-sm text-gray-300">
+                    Keep me logged in
+                  </label>
+                </div>
+                <Link to="/reset-password" className="text-sm text-blue-500 hover:text-blue-400">
+                  Forgot password?
+                </Link>
               </div>
 
               <button
@@ -193,7 +198,7 @@ export const LandingPage: React.FC = () => {
             <button className="text-left hover:text-gray-300">Send Feedback</button>
           </div>
           <div className="mt-4 text-sm text-gray-400">
-            <span>AECircle © 2025</span>
+            <span>AECircle © 2026 · aircraft.engineer</span>
           </div>
         </footer>
       </div>
