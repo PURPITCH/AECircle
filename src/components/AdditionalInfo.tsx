@@ -154,7 +154,7 @@ export const AdditionalInfo: React.FC = () => {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Driving license category</label>
-              <input className={inputClass} placeholder="e.g. B, C, D" value={form.driving_license_category} onChange={e => set('driving_license_category', e.target.value)} maxLength={10} />
+              <input className={inputClass} placeholder="e.g. Light Vehicle - Automatic, Heavy vehicle- Manual " value={form.driving_license_category} onChange={e => set('driving_license_category', e.target.value)} maxLength={10} />
             </div>
             <div>
               <label className={labelClass}>Issuing country</label>
