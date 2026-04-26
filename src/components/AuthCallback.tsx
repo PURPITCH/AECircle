@@ -7,8 +7,10 @@ export const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+      } else if (session) {
         navigate('/cv');
       } else {
         navigate('/');
@@ -20,7 +22,7 @@ export const AuthCallback: React.FC = () => {
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="flex items-center gap-3 text-blue-400">
         <Loader2 className="w-6 h-6 animate-spin" />
-        <span>Signing you in...</span>
+        <span>Please wait...</span>
       </div>
     </div>
   );
