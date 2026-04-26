@@ -112,15 +112,7 @@ useEffect(() => {
                 </button>
               </div>
             )}
-                <div className="border-t border-gray-700" />
-                <button onClick={handleSignOut}
-                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
-                  <LogOut className="w-4 h-4" /> Sign out
-                </button>
-              </div>
-            )}
-          </div>
-
+        
           {/* Search bar — centered */}
           <div className="flex-1 max-w-sm mx-auto">
             <div className="relative">
