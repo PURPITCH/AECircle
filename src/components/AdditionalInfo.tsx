@@ -9,14 +9,18 @@ interface AdditionalInfoData {
   notice_period: string;
   willing_to_relocate: boolean;
   preferred_locations: string;
+  driving_license_category: string;
+  driving_license_country: string;
 }
 
-const empty = (): AdditionalInfoData => ({
-  availability: '',
-  notice_period: '',
-  willing_to_relocate: false,
-  preferred_locations: '',
-});
+ const empty = (): AdditionalInfoData => ({
+    availability: '',
+    notice_period: '',
+    willing_to_relocate: false,
+    preferred_locations: '',
+    driving_license_category: '',
+    driving_license_country: '',
+  });
 
 const inputClass = "block w-full rounded-md bg-gray-700 border border-gray-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 const labelClass = "block text-xs font-medium text-gray-400 mb-1";
@@ -39,6 +43,8 @@ export const AdditionalInfo: React.FC = () => {
         notice_period: data.notice_period || '',
         willing_to_relocate: data.willing_to_relocate || false,
         preferred_locations: data.preferred_locations || '',
+        driving_license_category: data.driving_license_category || '',
+        driving_license_country: data.driving_license_country || '',
       });
       setHasData(!!(data.availability || data.notice_period));
     }
@@ -56,6 +62,13 @@ export const AdditionalInfo: React.FC = () => {
       alert('Error: ' + err.message);
     } finally { setSaving(false); }
   };
+
+     {form.driving_license_category && (
+            <span className="flex items-center gap-1.5">
+              <span className="text-gray-500">Driving license</span>
+              <span className="text-gray-300">{form.driving_license_category} — {form.driving_license_country}</span>
+            </span>
+          )}
 
   const set = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }));
 
@@ -144,7 +157,17 @@ export const AdditionalInfo: React.FC = () => {
               Cancel
             </button>
           </div>
-        </div>
+            <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className={labelClass}>Driving license category</label>
+              <input className={inputClass} placeholder="e.g. B, C, D" value={form.driving_license_category} onChange={e => set('driving_license_category', e.target.value)} maxLength={10} />
+            </div>
+            <div>
+              <label className={labelClass}>Issuing country</label>
+              <input className={inputClass} placeholder="e.g. UAE" value={form.driving_license_country} onChange={e => set('driving_license_country', e.target.value)} maxLength={30} />
+            </div>
+          </div>
+                  </div>
       )}
     </div>
   );
