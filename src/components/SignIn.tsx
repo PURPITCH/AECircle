@@ -179,7 +179,7 @@ export const SignIn: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-6">
+           <div className="mt-6">
               <Link
                 to="/signup"
                 className="w-full flex justify-center py-2 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800"
@@ -187,6 +187,13 @@ export const SignIn: React.FC = () => {
                 Join now
               </Link>
             </div>
+            <p className="mt-4 text-center text-xs text-gray-500">
+              By signing in you agree to our{' '}
+              <Link to="/terms" className="text-blue-500 hover:text-blue-400">Terms & Conditions</Link>
+              {' '}and{' '}
+              <Link to="/privacy" className="text-blue-500 hover:text-blue-400">Privacy Policy</Link>
+            </p>
+            
           </div>
         </div>
       </div>
