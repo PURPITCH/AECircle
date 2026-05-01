@@ -3,12 +3,16 @@ import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Plane, Loader2, CheckCircle, Lock } from 'lucide-react';
 
+const [signupEmail, setSignupEmail] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [signupError, setSignupError] = useState('');
+
 const ENTITY_TYPES = ['AMO (Approved Maintenance Organisation)', 'Training Organisation', 'Recruitment Agency', 'Individual Recruiter'];
 const ACTIVITIES = ['Recruitment only', 'Training only', 'Both recruitment and training'];
 
 export const CompanyRegister: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<'access' | 'profile' | 'success'>('access');
+  const [step, setStep] = useState<'access' | 'signup' | 'profile' | 'success'>('access');
   const [accessMethod, setAccessMethod] = useState<'code' | 'pay' | null>(null);
   const [inviteCode, setInviteCode] = useState('');
   const [codeError, setCodeError] = useState('');
@@ -47,7 +51,7 @@ export const CompanyRegister: React.FC = () => {
         setCodeError('Invalid or already used invite code. Please check and try again.');
       } else {
         setCodeValid(true);
-        setStep('profile');
+        setStep('signup');
       }
     } finally { setIsLoading(false); }
   };
@@ -105,7 +109,59 @@ export const CompanyRegister: React.FC = () => {
       </div>
     );
   }
+if (step === 'signup') {
+    const handleSignup = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsLoading(true);
+      setSignupError('');
+      try {
+        const { error } = await supabase.auth.signUp({
+          email: signupEmail,
+          password: signupPassword,
+          options: { emailRedirectTo: `${window.location.origin}/co/register` }
+        });
+        if (error) throw error;
+        setStep('profile');
+      } catch (err: any) {
+        setSignupError(err.message);
+      } finally { setIsLoading(false); }
+    };
 
+    return (
+      <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
+        <div className="max-w-md mx-auto">
+          <div className="text-center mb-8">
+            <Plane className="h-7 w-7 text-blue-500 mx-auto mb-3" />
+            <h1 className="text-2xl font-bold text-white">Create your account</h1>
+            <p className="text-gray-400 text-sm mt-2">One account for your company profile.</p>
+          </div>
+          <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+            {signupError && <div className="mb-4 p-3 rounded bg-red-500/10 border border-red-500 text-red-500 text-sm">{signupError}</div>}
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div>
+                <label className={labelClass}>Email address</label>
+                <input type="email" required value={signupEmail} onChange={e => setSignupEmail(e.target.value)}
+                  placeholder="your@email.com" className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>Password <span className="text-gray-500 text-xs">(min 8 characters)</span></label>
+                <input type="password" required minLength={8} value={signupPassword} onChange={e => setSignupPassword(e.target.value)}
+                  placeholder="Create a strong password" className={inputClass} />
+              </div>
+              <button type="submit" disabled={isLoading}
+                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
+                {isLoading ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : 'Continue →'}
+              </button>
+              <button type="button" onClick={() => setStep('access')}
+                className="w-full text-sm text-gray-400 hover:text-white transition-colors">
+                ← Back
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (step === 'access') {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
@@ -160,10 +216,10 @@ export const CompanyRegister: React.FC = () => {
                 <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Access to engineer profiles</li>
                 <li className="flex items-center gap-2"><Lock className="w-4 h-4 text-gray-500" /> Premium contact unlock — $159/post</li>
               </ul>
-              <button onClick={() => setStep('profile')}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
-                Create my company profile →
-              </button>
+             <button onClick={() => setStep('signup')}
+            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
+            Create my company profile →
+          </button>
             </div>
           )}
 
