@@ -97,9 +97,9 @@ function CompanyNav({ companyName }: { companyName: string }) {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
-            {navItem('/co/academy', 'Academy', GraduationCap)}
+            {navItem('/jobs', 'Jobs', Briefcase)}
+            {navItem('/trainings', 'Training', BookOpen)}
+            {navItem('/academy', 'Academy', GraduationCap)}
           </div>
 
           {/* Mobile button */}
