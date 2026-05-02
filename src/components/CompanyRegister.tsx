@@ -72,16 +72,13 @@ const handleSignup = async (e: React.FormEvent) => {
       const { data: { session } } = await supabase.auth.getSession();
       const userId = session?.user?.id;
 
-      if (!userId) {
-        // User signed up but not confirmed yet — sign them in anyway
-        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+   if (!userId) {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
           email: signupEmail,
           password: signupPassword,
         });
         if (signInError) {
-          // Email not confirmed yet — save with temp approach
-          alert('Please check your email and confirm your account, then sign in to complete your profile.');
-          navigate('/');
+          setStep('success');
           return;
         }
       }
@@ -112,16 +109,22 @@ const handleSignup = async (e: React.FormEvent) => {
     } finally { setIsLoading(false); }
   };
 
-  if (step === 'success') {
+if (step === 'success') {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
         <div className="max-w-md mx-auto bg-gray-800 rounded-xl border border-gray-700 p-8 text-center">
-          <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome to AECircle!</h2>
-          <p className="text-gray-400 text-sm mb-6">Your company profile has been created.</p>
+          <div className="text-5xl mb-4">✉️</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Almost there!</h2>
+          <p className="text-gray-400 text-sm mb-2">
+            We sent a confirmation email to:
+          </p>
+          <p className="text-blue-400 text-sm font-medium mb-4">{signupEmail}</p>
+          <p className="text-gray-400 text-sm mb-6">
+            Click the link in your email to confirm your account. Once confirmed, sign in to access your company dashboard.
+          </p>
           <button onClick={() => navigate('/')}
             className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
-            Go to AECircle →
+            Go to sign in →
           </button>
         </div>
       </div>
