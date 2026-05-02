@@ -1,285 +1,214 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Plane, Loader2, CheckCircle, Lock } from 'lucide-react';
+import { Loader2, Building2, MapPin, Globe, Plus, Plane, Search, Briefcase, BookOpen, GraduationCap, User, Settings, LogOut, ChevronDown, Menu, X } from 'lucide-react';
 
-const ENTITY_TYPES = ['AMO (Approved Maintenance Organisation)', 'Training Organisation', 'Recruitment Agency', 'Individual Recruiter'];
-const ACTIVITIES = ['Recruitment only', 'Training only', 'Both recruitment and training'];
-
-const inputClass = "block w-full rounded-md bg-gray-700 border border-gray-600 text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
-const labelClass = "block text-sm font-medium text-gray-300 mb-1";
-
-export const CompanyRegister: React.FC = () => {
+function CompanyNav({ companyName }: { companyName: string }) {
   const navigate = useNavigate();
-  const [step, setStep] = useState<'access' | 'signup' | 'profile' | 'success'>('access');
-  const [accessMethod, setAccessMethod] = useState<'code' | 'pay' | null>(null);
-  const [inviteCode, setInviteCode] = useState('');
-  const [codeError, setCodeError] = useState('');
-  const [codeValid, setCodeValid] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [signupEmail, setSignupEmail] = useState('');
-  const [signupPassword, setSignupPassword] = useState('');
-  const [signupError, setSignupError] = useState('');
-  const [form, setForm] = useState({
-    entity_name: '', entity_type: '', activity: '', affiliation: '',
-    location: '', website: '', about: '', email: '', phone: '',
-    linkedin: '', social_handles: '',
-  });
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const set = (field: string, value: string) => setForm(prev => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    document.documentElement.classList.toggle('light-mode', !darkMode);
+  }, [darkMode]);
 
-  const validateCode = async () => {
-    if (!inviteCode.trim()) { setCodeError('Please enter an invite code.'); return; }
-    setIsLoading(true);
-    setCodeError('');
-    try {
-      const { data, error } = await supabase
-        .from('invite_codes')
-        .select('*')
-        .eq('code', inviteCode.trim().toUpperCase())
-        .eq('used', false)
-        .maybeSingle();
-      if (error || !data) {
-        setCodeError('Invalid or already used invite code.');
-      } else {
-        setCodeValid(true);
-        setStep('signup');
-      }
-    } finally { setIsLoading(false); }
-  };
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setSignupError('');
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: signupEmail,
-        password: signupPassword,
-        options: { emailRedirectTo: `${window.location.origin}/co/register` }
-      });
-      if (error) throw error;
-      setStep('profile');
-    } catch (err: any) {
-      setSignupError(err.message);
-    } finally { setIsLoading(false); }
-  };
+  const isActive = (path: string) => location.pathname === path;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate('/'); return; }
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const uniqueCode = Array.from({length: 4}, () => chars[Math.floor(Math.random() * 36)]).join('');
-      const handle = form.entity_name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
-      const username = `${uniqueCode}-${handle}`;
-      const { error: profileError } = await supabase.from('company_profiles').insert({
-        user_id: user.id, username, ...form,
-        invite_code: inviteCode.trim().toUpperCase() || null,
-        plan: 'free',
-      });
-      if (profileError) throw profileError;
-      if (inviteCode) {
-        await supabase.from('invite_codes')
-          .update({ used: true, used_by: user.id, used_at: new Date().toISOString() })
-          .eq('code', inviteCode.trim().toUpperCase());
-      }
-      setStep('success');
-    } catch (err: any) {
-      alert('Error: ' + err.message);
-    } finally { setIsLoading(false); }
-  };
-
-  if (step === 'success') {
-    return (
-      <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
-        <div className="max-w-md mx-auto bg-gray-800 rounded-xl border border-gray-700 p-8 text-center">
-          <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Welcome to AECircle!</h2>
-          <p className="text-gray-400 text-sm mb-6">Your company profile has been created.</p>
-          <button onClick={() => navigate('/')}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
-            Go to AECircle →
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (step === 'signup') {
-    return (
-      <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
-        <div className="max-w-md mx-auto">
-          <div className="text-center mb-8">
-            <Plane className="h-7 w-7 text-blue-500 mx-auto mb-3" />
-            <h1 className="text-2xl font-bold text-white">Create your account</h1>
-            <p className="text-gray-400 text-sm mt-2">One account for your company profile.</p>
-          </div>
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
-            {signupError && <div className="mb-4 p-3 rounded bg-red-500/10 border border-red-500 text-red-500 text-sm">{signupError}</div>}
-            <form onSubmit={handleSignup} className="space-y-4">
-              <div>
-                <label className={labelClass}>Email address</label>
-                <input type="email" required value={signupEmail} onChange={e => setSignupEmail(e.target.value)}
-                  placeholder="your@email.com" className={inputClass} />
-              </div>
-              <div>
-                <label className={labelClass}>Password <span className="text-gray-500 text-xs">(min 8 characters)</span></label>
-                <input type="password" required minLength={8} value={signupPassword} onChange={e => setSignupPassword(e.target.value)}
-                  placeholder="Create a strong password" className={inputClass} />
-              </div>
-              <button type="submit" disabled={isLoading}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
-                {isLoading ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : 'Continue →'}
-              </button>
-              <button type="button" onClick={() => setStep('access')}
-                className="w-full text-sm text-gray-400 hover:text-white transition-colors">← Back</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (step === 'profile') {
-    return (
-      <div className="min-h-screen bg-gray-900 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center gap-3 mb-8">
-            <button onClick={() => setStep('signup')} className="text-gray-400 hover:text-white">←</button>
-            <h1 className="text-2xl font-bold text-white">Create company profile</h1>
-            {codeValid && <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded-full">✓ Invite code applied</span>}
-          </div>
-          <form onSubmit={handleSubmit} className="bg-gray-800 rounded-xl border border-gray-700 p-6 space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2">
-                <label className={labelClass}>Entity / Individual name *</label>
-                <input required className={inputClass} placeholder="e.g. Aviation Staffing Group" value={form.entity_name} onChange={e => set('entity_name', e.target.value)} />
-              </div>
-              <div>
-                <label className={labelClass}>Entity type *</label>
-                <select required className={inputClass} value={form.entity_type} onChange={e => set('entity_type', e.target.value)}>
-                  <option value="">Select type</option>
-                  {ENTITY_TYPES.map(t => <option key={t}>{t}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Activity *</label>
-                <select required className={inputClass} value={form.activity} onChange={e => set('activity', e.target.value)}>
-                  <option value="">Select activity</option>
-                  {ACTIVITIES.map(a => <option key={a}>{a}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className={labelClass}>Location</label>
-                <input className={inputClass} placeholder="e.g. London, UK" value={form.location} onChange={e => set('location', e.target.value)} maxLength={40} />
-              </div>
-              <div>
-                <label className={labelClass}>Affiliation</label>
-                <input className={inputClass} placeholder="e.g. Independent / Part of XYZ Group" value={form.affiliation} onChange={e => set('affiliation', e.target.value)} />
-              </div>
-              <div className="col-span-2">
-                <label className={labelClass}>Website</label>
-                <input className={inputClass} placeholder="e.g. https://yourcompany.com" value={form.website} onChange={e => set('website', e.target.value)} />
-              </div>
-              <div className="col-span-2">
-                <label className={labelClass}>About <span className="text-gray-500 text-xs">(max 300 chars)</span></label>
-                <textarea className={inputClass} rows={3} placeholder="Brief description..." value={form.about} onChange={e => set('about', e.target.value)} maxLength={300} />
-                <p className="text-xs text-gray-600 mt-1">{form.about.length}/300</p>
-              </div>
-              <div>
-                <label className={labelClass}>Contact email</label>
-                <input type="email" className={inputClass} placeholder="e.g. recruit@company.com" value={form.email} onChange={e => set('email', e.target.value)} />
-              </div>
-              <div>
-                <label className={labelClass}>Contact phone</label>
-                <input className={inputClass} placeholder="e.g. +44 20 1234 5678" value={form.phone} onChange={e => set('phone', e.target.value)} />
-              </div>
-              <div>
-                <label className={labelClass}>LinkedIn</label>
-                <input className={inputClass} placeholder="linkedin.com/company/yourname" value={form.linkedin} onChange={e => set('linkedin', e.target.value)} />
-              </div>
-              <div>
-                <label className={labelClass}>Other social handles</label>
-                <input className={inputClass} placeholder="e.g. @yourcompany" value={form.social_handles} onChange={e => set('social_handles', e.target.value)} />
-              </div>
-            </div>
-            <div className="pt-4">
-              <button type="submit" disabled={isLoading}
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
-                {isLoading ? <><Loader2 className="w-4 h-4 animate-spin inline mr-2" />Creating profile...</> : 'Create company profile →'}
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
+  const navItem = (path: string, label: string, Icon: any) => (
+    <Link to={path} onClick={() => setMobileOpen(false)}
+      className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium transition-colors
+        ${isActive(path) ? 'bg-blue-600 text-white' : 'text-gray-300 hover:text-white hover:bg-gray-700'}`}>
+      <Icon className="w-4 h-4" />{label}
+    </Link>
+  );
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 px-4">
-      <div className="max-w-md mx-auto">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Plane className="h-7 w-7 text-blue-500" />
-            <span className="text-2xl font-bold text-white">AECircle</span>
-          </div>
-          <h1 className="text-2xl font-bold text-white">Join as a Company or Recruiter</h1>
-          <p className="text-gray-400 text-sm mt-2">Connect with verified aviation engineers worldwide.</p>
-        </div>
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <button onClick={() => setAccessMethod('code')}
-            className={`p-4 rounded-xl border-2 text-left transition-colors ${accessMethod === 'code' ? 'border-blue-500 bg-blue-500/10' : 'border-gray-600 hover:border-gray-500'}`}>
-            <div className="text-2xl mb-2">🎟️</div>
-            <p className="text-white text-sm font-medium">I have an invite code</p>
-            <p className="text-gray-500 text-xs mt-1">Free access for invited partners</p>
-          </button>
-          <button onClick={() => setAccessMethod('pay')}
-            className={`p-4 rounded-xl border-2 text-left transition-colors ${accessMethod === 'pay' ? 'border-blue-500 bg-blue-500/10' : 'border-gray-600 hover:border-gray-500'}`}>
-            <div className="text-2xl mb-2">💳</div>
-            <p className="text-white text-sm font-medium">Purchase access</p>
-            <p className="text-gray-500 text-xs mt-1">First year free during launch</p>
-          </button>
-        </div>
-        {accessMethod === 'code' && (
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
-            <label className={labelClass}>Enter your invite code</label>
-            <input type="text" value={inviteCode} onChange={e => setInviteCode(e.target.value.toUpperCase())}
-              placeholder="AEC-XXXXXX" className={inputClass + " uppercase tracking-widest font-mono"} />
-            {codeError && <p className="text-red-400 text-xs mt-2">{codeError}</p>}
-            <button onClick={validateCode} disabled={isLoading}
-              className="w-full mt-4 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
-              {isLoading ? <Loader2 className="w-4 h-4 animate-spin mx-auto" /> : 'Validate code →'}
+    <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
+      <div className="max-w-5xl mx-auto px-4">
+        <div className="flex items-center gap-3 h-14">
+
+          {/* Logo dropdown */}
+          <div className="relative flex-shrink-0" ref={menuRef}>
+            <button onClick={() => setMenuOpen(!menuOpen)}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Plane className="h-6 w-6 text-blue-500" />
+              <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
+              <span className="text-gray-500 text-xs hidden sm:block">/ Co</span>
             </button>
+
+            {menuOpen && (
+              <div className="absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-700">
+                  <p className="text-xs text-white font-medium truncate">{companyName}</p>
+                  <p className="text-xs text-gray-500">Company account</p>
+                </div>
+                <button onClick={() => { navigate('/co/dashboard'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <Building2 className="w-4 h-4" /> My dashboard
+                </button>
+                <button onClick={() => { navigate('/co/profile'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <User className="w-4 h-4" /> Edit profile
+                </button>
+                <div className="border-t border-gray-700" />
+                <div className="flex items-center justify-between px-4 py-2.5">
+                  <span className="text-sm text-gray-300 flex items-center gap-2">
+                    {darkMode ? '🌙' : '🌟'} {darkMode ? 'Dark mode' : 'Light mode'}
+                  </span>
+                  <button onClick={() => setDarkMode(!darkMode)}
+                    className={`relative inline-flex flex-shrink-0 w-10 h-5 rounded-full transition-colors duration-200 ${darkMode ? 'bg-blue-600' : 'bg-gray-400'}`}>
+                    <span className={`inline-block w-4 h-4 mt-0.5 bg-white rounded-full shadow transform transition-transform duration-200 ${darkMode ? 'translate-x-5' : 'translate-x-0.5'}`} />
+                  </button>
+                </div>
+                <div className="border-t border-gray-700" />
+                <button onClick={() => { navigate('/co/settings'); setMenuOpen(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <Settings className="w-4 h-4" /> Account settings
+                </button>
+                <div className="border-t border-gray-700" />
+                <button onClick={async () => { await supabase.auth.signOut(); navigate('/co'); }}
+                  className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors">
+                  <LogOut className="w-4 h-4" /> Sign out
+                </button>
+              </div>
+            )}
           </div>
-        )}
-        {accessMethod === 'pay' && (
-          <div className="bg-gray-800 rounded-xl border border-gray-700 p-6 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-medium mb-4">
-              🎉 Launch offer — First year FREE
+
+          {/* Search */}
+          <div className="flex-1 max-w-sm mx-auto">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+              <input type="text" placeholder="Search engineers..."
+                className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-1.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
             </div>
-            <p className="text-3xl font-bold text-white mb-1">$0 <span className="text-gray-500 text-lg line-through">$49</span></p>
-            <p className="text-gray-400 text-sm mb-4">Then $49/year from 2027</p>
-            <ul className="text-left space-y-2 mb-6 text-sm text-gray-300">
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Company profile on aircraft.engineer</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> 1 complimentary job post per week</li>
-              <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /> Access to engineer profiles</li>
-              <li className="flex items-center gap-2"><Lock className="w-4 h-4 text-gray-500" /> Premium contact unlock — $159/post</li>
-            </ul>
-            <button onClick={() => setStep('signup')}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
-              Create my company profile →
-            </button>
+          </div>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItem('/co/dashboard', 'Company', Building2)}
+            {navItem('/co/jobs', 'Jobs', Briefcase)}
+            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/academy', 'Academy', GraduationCap)}
+          </div>
+
+          {/* Mobile button */}
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+
+        {mobileOpen && (
+          <div className="md:hidden flex flex-col gap-1 pb-3">
+            {navItem('/co/dashboard', 'Company', Building2)}
+            {navItem('/co/jobs', 'Jobs', Briefcase)}
+            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/academy', 'Academy', GraduationCap)}
           </div>
         )}
-        <p className="text-center text-xs text-gray-600 mt-6">
-          Already have an account? <Link to="/" className="text-blue-500 hover:text-blue-400">Sign in</Link>
-        </p>
+      </div>
+    </nav>
+  );
+}
+
+export const CompanyDashboard: React.FC = () => {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate('/co'); return; }
+      const { data } = await supabase.from('company_profiles').select('*').eq('user_id', user.id).maybeSingle();
+      if (!data) { navigate('/co/register'); return; }
+      setProfile(data);
+      setLoading(false);
+    };
+    fetchProfile();
+  }, []);
+
+  if (loading) return (
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-900">
+      <CompanyNav companyName={profile.entity_name} />
+      <div className="max-w-5xl mx-auto px-4 py-6 space-y-4">
+
+        {/* Company header card */}
+        <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+          <div className="flex items-start gap-4">
+            <div className="w-16 h-16 rounded-lg bg-blue-600 flex items-center justify-center text-white flex-shrink-0 overflow-hidden">
+              {profile.logo_url
+                ? <img src={profile.logo_url} alt={profile.entity_name} className="w-full h-full object-cover" />
+                : <Building2 className="w-8 h-8" />
+              }
+            </div>
+            <div className="flex-1">
+              <h1 className="text-xl font-bold text-white">{profile.entity_name}</h1>
+              <p className="text-blue-400 text-sm">{profile.entity_type}</p>
+              <p className="text-gray-500 text-xs mt-0.5">{profile.activity}</p>
+              <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+                {profile.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{profile.location}</span>}
+                {profile.website && <a href={profile.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-blue-400 hover:text-blue-300"><Globe className="w-3 h-3" />{profile.website}</a>}
+              </div>
+              {profile.about && <p className="text-gray-400 text-sm mt-3">{profile.about}</p>}
+            </div>
+            <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-400 flex-shrink-0">
+              {profile.plan === 'free' ? 'Free plan' : 'Premium'}
+            </span>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-700">
+            <p className="text-xs text-blue-500">aircraft.engineer/co/{profile.username}</p>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: 'Active job posts', value: '0', action: 'Post a job' },
+            { label: 'Applications received', value: '0', action: 'View all' },
+            { label: 'Profile views', value: '0', action: 'Coming soon' },
+          ].map((stat, i) => (
+            <div key={i} className="bg-gray-800 rounded-xl border border-gray-700 p-4 text-center">
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
+              <p className="text-xs text-gray-500 mt-1">{stat.label}</p>
+              <p className="text-xs text-blue-400 mt-2 cursor-pointer hover:text-blue-300">{stat.action}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Active posts */}
+        <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-blue-400">Active Posts</h2>
+            <button className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
+              <Plus className="w-4 h-4" /> Post a job
+            </button>
+          </div>
+          <div className="text-center py-8 text-gray-500">
+            <p className="text-sm">No active posts yet.</p>
+            <p className="text-xs mt-1">Post your first job to start receiving applications from verified engineers.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   );
 };
 
-export default CompanyRegister;
+export default CompanyDashboard;
