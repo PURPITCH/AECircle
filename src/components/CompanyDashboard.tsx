@@ -110,10 +110,10 @@ function CompanyNav({ companyName }: { companyName: string }) {
 
         {mobileOpen && (
           <div className="md:hidden flex flex-col gap-1 pb-3">
-            {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
-            {navItem('/co/academy', 'Academy', GraduationCap)}
+           {navItem('/co/dashboard', 'Company', Building2)}
+            {navItem('/jobs', 'Jobs', Briefcase)}
+            {navItem('/trainings', 'Training', BookOpen)}
+            {navItem('/academy', 'Academy', GraduationCap)}
           </div>
         )}
       </div>
