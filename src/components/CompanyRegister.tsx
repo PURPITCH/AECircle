@@ -48,15 +48,15 @@ export const CompanyRegister: React.FC = () => {
     } finally { setIsLoading(false); }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setSignupError('');
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: signupEmail,
         password: signupPassword,
-        options: { emailRedirectTo: `${window.location.origin}/co/register` }
+        options: { emailRedirectTo: `${window.location.origin}/co/dashboard` }
       });
       if (error) throw error;
       setStep('profile');
@@ -69,18 +69,38 @@ export const CompanyRegister: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const userId = session?.user?.id;
+
+      if (!userId) {
+        // User signed up but not confirmed yet — sign them in anyway
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+          email: signupEmail,
+          password: signupPassword,
+        });
+        if (signInError) {
+          // Email not confirmed yet — save with temp approach
+          alert('Please check your email and confirm your account, then sign in to complete your profile.');
+          navigate('/');
+          return;
+        }
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate('/'); return; }
+
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       const uniqueCode = Array.from({length: 4}, () => chars[Math.floor(Math.random() * 36)]).join('');
       const handle = form.entity_name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
       const username = `${uniqueCode}-${handle}`;
+
       const { error: profileError } = await supabase.from('company_profiles').insert({
         user_id: user.id, username, ...form,
         invite_code: inviteCode.trim().toUpperCase() || null,
         plan: 'free',
       });
       if (profileError) throw profileError;
+
       if (inviteCode) {
         await supabase.from('invite_codes')
           .update({ used: true, used_by: user.id, used_at: new Date().toISOString() })
