@@ -33,8 +33,16 @@ export const LandingPage: React.FC = () => {
         password: data.password,
       });
       if (signInError) throw new Error(signInError.message);
-     // Check if company or engineer
-      const { data: companyProfile } = await supabase.from('company_profiles').select('id').eq('user_id', (await supabase.auth.getUser()).data.user?.id || '').maybeSingle();
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('No user found');
+
+      const { data: companyProfile } = await supabase
+        .from('company_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
       if (companyProfile) {
         navigate('/co/dashboard');
       } else {
@@ -46,7 +54,7 @@ export const LandingPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
