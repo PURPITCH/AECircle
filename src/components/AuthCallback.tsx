@@ -7,15 +7,34 @@ export const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        navigate('/reset-password');
-      } else if (session) {
-        navigate('/cv');
-      } else {
-        navigate('/');
-      }
-    });
+    const handleCallback = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          navigate('/reset-password');
+          return;
+        }
+
+        if (session) {
+          // Check if company profile exists
+          const { data: companyProfile } = await supabase
+            .from('company_profiles')
+            .select('id')
+            .eq('user_id', session.user.id)
+            .maybeSingle();
+
+          if (companyProfile) {
+            navigate('/co/dashboard');
+          } else {
+            navigate('/cv');
+          }
+        } else {
+          navigate('/');
+        }
+      });
+    };
+    handleCallback();
   }, []);
 
   return (
