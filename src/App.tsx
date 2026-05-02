@@ -13,6 +13,7 @@ import { supabase } from './lib/supabase';
 import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
 import { CompanyRegister } from './components/CompanyRegister';
 import { CompanyDashboard } from './components/CompanyDashboard';
+import { CompanyLogin } from './components/CompanyLogin';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -202,6 +203,7 @@ function App() {
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/co/register" element={<CompanyRegister />} />
         <Route path="/co/dashboard" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
+        <Route path="/co" element={<CompanyLogin />} />
       </Routes>
     </BrowserRouter>
   );
