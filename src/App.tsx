@@ -14,6 +14,8 @@ import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogO
 import { CompanyRegister } from './components/CompanyRegister';
 import { CompanyDashboard } from './components/CompanyDashboard';
 import { CompanyLogin } from './components/CompanyLogin';
+import { CompanyProfile } from './components/CompanyProfile';
+import { CompanySettings } from './components/CompanySettings';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -204,6 +206,8 @@ function App() {
         <Route path="/co/register" element={<CompanyRegister />} />
         <Route path="/co/dashboard" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
         <Route path="/co" element={<CompanyLogin />} />
+        <Route path="/co/profile" element={<ProtectedRoute><CompanyProfile /></ProtectedRoute>} />
+<Route path="/co/settings" element={<ProtectedRoute><CompanySettings /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
