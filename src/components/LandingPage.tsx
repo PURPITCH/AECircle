@@ -189,7 +189,9 @@ export const LandingPage: React.FC = () => {
                 Build my free CV →
               </Link>
             </div>
-
+<p className="mt-3 text-center text-xs text-gray-500">
+  Recruiter or company? <Link to="/co" className="text-blue-500 hover:text-blue-400">Sign in here</Link>
+</p>
             <p className="mt-4 text-center text-xs text-gray-600">
               By signing in you agree to our{' '}
               <Link to="/terms" className="text-blue-500 hover:text-blue-400">Terms & Conditions</Link>
