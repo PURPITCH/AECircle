@@ -33,7 +33,13 @@ export const LandingPage: React.FC = () => {
         password: data.password,
       });
       if (signInError) throw new Error(signInError.message);
-      navigate('/cv');
+     // Check if company or engineer
+      const { data: companyProfile } = await supabase.from('company_profiles').select('id').eq('user_id', (await supabase.auth.getUser()).data.user?.id || '').maybeSingle();
+      if (companyProfile) {
+        navigate('/co/dashboard');
+      } else {
+        navigate('/cv');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during sign in');
     } finally {
