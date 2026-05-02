@@ -12,6 +12,7 @@ import { ChangeEmail } from './components/ChangeEmail';
 import { supabase } from './lib/supabase';
 import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
 import { CompanyRegister } from './components/CompanyRegister';
+import { CompanyDashboard } from './components/CompanyDashboard';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -200,6 +201,7 @@ function App() {
         <Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/co/register" element={<CompanyRegister />} />
+        <Route path="/co/dashboard" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
