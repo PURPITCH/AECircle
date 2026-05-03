@@ -97,9 +97,9 @@ function CompanyNav({ companyName }: { companyName: string }) {
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/jobs', 'Jobs', Briefcase)}
-            {navItem('/trainings', 'Training', BookOpen)}
-            {navItem('/academy', 'Academy', GraduationCap)}
+            {navItem('/co/jobs', 'Jobs', Briefcase)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
+            {navItem('/co/academy', 'Academy', GraduationCap)}
           </div>
 
           {/* Mobile button */}
@@ -111,9 +111,9 @@ function CompanyNav({ companyName }: { companyName: string }) {
         {mobileOpen && (
           <div className="md:hidden flex flex-col gap-1 pb-3">
            {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/jobs', 'Jobs', Briefcase)}
-            {navItem('/trainings', 'Training', BookOpen)}
-            {navItem('/academy', 'Academy', GraduationCap)}
+            {navItem('/co/jobs', 'Jobs', Briefcase)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
+            {navItem('/co/academy', 'Academy', GraduationCap)}
           </div>
         )}
       </div>
@@ -166,7 +166,13 @@ export const CompanyDashboard: React.FC = () => {
                 {profile.location && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{profile.location}</span>}
                 {profile.website && <a href={profile.website} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-blue-400 hover:text-blue-300"><Globe className="w-3 h-3" />{profile.website}</a>}
               </div>
-              {profile.about && <p className="text-gray-400 text-sm mt-3">{profile.about}</p>}
+         {profile.about && <p className="text-gray-400 text-sm mt-3">{profile.about}</p>}
+              <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
+                {profile.email && <span>📧 {profile.email}</span>}
+                {profile.phone && <span>📞 {profile.phone}</span>}
+                {profile.linkedin && <a href={profile.linkedin} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300">LinkedIn</a>}
+                {profile.affiliation && <span>🏢 {profile.affiliation}</span>}
+              </div>
             </div>
             <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-400 flex-shrink-0">
               {profile.plan === 'free' ? 'Free plan' : 'Premium'}
