@@ -16,6 +16,8 @@ import { CompanyDashboard } from './components/CompanyDashboard';
 import { CompanyLogin } from './components/CompanyLogin';
 import { CompanyProfile } from './components/CompanyProfile';
 import { CompanySettings } from './components/CompanySettings';
+import { CompanyJobs } from './components/CompanyJobs';
+import { CompanyTraining } from './components/CompanyTraining';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -208,6 +210,8 @@ function App() {
         <Route path="/co" element={<CompanyLogin />} />
         <Route path="/co/profile" element={<ProtectedRoute><CompanyProfile /></ProtectedRoute>} />
 <Route path="/co/settings" element={<ProtectedRoute><CompanySettings /></ProtectedRoute>} />
+        <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
+<Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
