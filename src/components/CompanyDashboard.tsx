@@ -96,10 +96,9 @@ function CompanyNav({ companyName }: { companyName: string }) {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
-            {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/trainings', 'Training', BookOpen)}
-            {navItem('/co/academy', 'Academy', GraduationCap)}
+           {navItem('/co/dashboard', 'Company', Building2)}
+{navItem('/co/jobs', 'Jobs', Briefcase)}
+{navItem('/co/training', 'Training', BookOpen)}
           </div>
 
           {/* Mobile button */}
@@ -110,10 +109,9 @@ function CompanyNav({ companyName }: { companyName: string }) {
 
         {mobileOpen && (
           <div className="md:hidden flex flex-col gap-1 pb-3">
-           {navItem('/co/dashboard', 'Company', Building2)}
-            {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/trainings', 'Training', BookOpen)}
-            {navItem('/co/academy', 'Academy', GraduationCap)}
+          {navItem('/co/dashboard', 'Company', Building2)}
+{navItem('/co/jobs', 'Jobs', Briefcase)}
+{navItem('/co/training', 'Training', BookOpen)}
           </div>
         )}
       </div>
