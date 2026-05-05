@@ -18,6 +18,8 @@ import { CompanyProfile } from './components/CompanyProfile';
 import { CompanySettings } from './components/CompanySettings';
 import { CompanyJobs } from './components/CompanyJobs';
 import { CompanyTraining } from './components/CompanyTraining';
+import { PostJob } from './components/PostJob';
+import { JobsPage } from './components/JobsPage';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -209,9 +211,12 @@ function App() {
         <Route path="/co/dashboard" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
         <Route path="/co" element={<CompanyLogin />} />
         <Route path="/co/profile" element={<ProtectedRoute><CompanyProfile /></ProtectedRoute>} />
-<Route path="/co/settings" element={<ProtectedRoute><CompanySettings /></ProtectedRoute>} />
+        <Route path="/co/settings" element={<ProtectedRoute><CompanySettings /></ProtectedRoute>} />
         <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
-<Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+        <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+        <Route path="/co/jobs/post" element={<ProtectedRoute><PostJob /></ProtectedRoute>} />
+        <Route path="/jobs" element={<ProtectedRoute><AppLayout><JobsPage /></AppLayout></ProtectedRoute>} />
+        <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
