@@ -165,7 +165,7 @@ export const PostJob: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Location</label>
-                <input className={inputClass} placeholder="e.g. Dubai, UAE" value={form.location} onChange={e => set('location', e.target.value)} />
+                <input className={inputClass} placeholder="e.g. London, UK" value={form.location} onChange={e => set('location', e.target.value)} />
               </div>
               <div className="flex items-center gap-2 mt-6">
                 <input type="checkbox" id="remote" checked={form.is_remote} onChange={e => set('is_remote', e.target.checked)} className="w-4 h-4 rounded bg-gray-700 border-gray-600 text-blue-500" />
