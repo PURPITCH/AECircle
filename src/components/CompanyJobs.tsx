@@ -5,7 +5,6 @@ import { Plane, Search, Briefcase, BookOpen, Building2, Menu, X, Settings, LogOu
 
 function CompanyNav({ companyName }: { companyName: string }) {
   const navigate = useNavigate();
-  const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
