@@ -197,7 +197,7 @@ export const PostJob: React.FC = () => {
 
             <div>
               <label className={labelClass}>Type endorsement requirement <span className="text-gray-500 text-xs">(free text)</span></label>
-              <input className={inputClass} placeholder="e.g. B737-800/CFM56-7B endorsed, A320 type rated..." value={form.type_endorsement} onChange={e => set('type_endorsement', e.target.value)} />
+              <input className={inputClass} placeholder="e.g. B737-800/CFM56-7B, A320/v2500..." value={form.type_endorsement} onChange={e => set('type_endorsement', e.target.value)} />
             </div>
           </div>
           
