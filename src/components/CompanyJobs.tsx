@@ -5,6 +5,7 @@ import { Plane, Search, Briefcase, BookOpen, Building2, Menu, X, Settings, LogOu
 
 function CompanyNav({ companyName }: { companyName: string }) {
   const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -118,9 +119,9 @@ export const CompanyJobs: React.FC = () => {
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-blue-400">Job Posts</h2>
-            <button className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
-              <Plus className="w-4 h-4" /> Post a job
-            </button>
+           <button onClick={() => navigate('/co/jobs/post')} className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
+  <Plus className="w-4 h-4" /> Post a job
+</button>
           </div>
           <div className="text-center py-16 text-gray-500">
             <Briefcase className="w-12 h-12 mx-auto mb-3 opacity-30" />
