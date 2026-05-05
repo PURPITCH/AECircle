@@ -151,10 +151,30 @@ export const CompanyDashboard: React.FC = () => {
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
           <div className="flex items-start gap-4">
             <div className="w-16 h-16 rounded-lg bg-blue-600 flex items-center justify-center text-white flex-shrink-0 overflow-hidden">
+              <div className="relative group cursor-pointer w-full h-full" onClick={() => document.getElementById('logo-upload')?.click()}>
               {profile.logo_url
                 ? <img src={profile.logo_url} alt={profile.entity_name} className="w-full h-full object-cover" />
                 : <Building2 className="w-8 h-8" />
               }
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
+                <span className="text-white text-xs">Upload logo</span>
+              </div>
+              <input id="logo-upload" type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const { data: { user } } = await supabase.auth.getUser();
+                  if (!user) return;
+                  const ext = file.name.split('.').pop();
+                  const path = `logos/${user.id}/logo.${ext}`;
+                  await supabase.storage.from('avatars').upload(path, file, { upsert: true });
+                  const { data } = supabase.storage.from('avatars').getPublicUrl(path);
+                  const url = `${data.publicUrl}?t=${Date.now()}`;
+                  await supabase.from('company_profiles').update({ logo_url: url }).eq('user_id', user.id);
+                  setProfile({ ...profile, logo_url: url });
+                }}
+              />
+            </div>
             </div>
             <div className="flex-1">
               <h1 className="text-xl font-bold text-white">{profile.entity_name}</h1>
