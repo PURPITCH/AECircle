@@ -232,7 +232,7 @@ export const CompanyJobs: React.FC = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <p className="font-semibold text-white">{job.title}</p>
+                          <p onClick={() => navigate(`/jobs/${job.job_code}`)} className="font-semibold text-white hover:text-blue-400 cursor-pointer transition-colors">{job.title}</p>
                           <p className="text-xs text-blue-400">{companyName}</p>
                           <p className="text-xs text-gray-500 mt-0.5">
                             {job.location}{job.is_remote ? ' · Remote' : ''} · {job.job_types?.join(', ')}
