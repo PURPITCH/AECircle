@@ -171,7 +171,7 @@ export const CompanyJobs: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-700">
                     <button className="text-xs text-blue-400 hover:text-blue-300 transition-colors">Edit</button>
-                    <button onClick={() => handleDelete(job.id)} className="text-xs text-red-400 hover:text-red-300 transition-colors">Delete</button>
+                    <button onClick={() => navigate(`/co/jobs/edit/${job.id}`)} className="text-xs text-blue-400 hover:text-blue-300 transition-colors">Edit</button>
                     <span className="text-xs text-gray-600 ml-auto">{new Date(job.created_at).toLocaleDateString('en-GB')}</span>
                   </div>
                 </div>
