@@ -20,6 +20,7 @@ import { CompanyJobs } from './components/CompanyJobs';
 import { CompanyTraining } from './components/CompanyTraining';
 import { PostJob } from './components/PostJob';
 import { JobsPage } from './components/JobsPage';
+import { EditJob } from './components/EditJob';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -217,6 +218,7 @@ function App() {
         <Route path="/co/jobs/post" element={<ProtectedRoute><PostJob /></ProtectedRoute>} />
         <Route path="/jobs" element={<ProtectedRoute><AppLayout><JobsPage /></AppLayout></ProtectedRoute>} />
         <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
+        <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
