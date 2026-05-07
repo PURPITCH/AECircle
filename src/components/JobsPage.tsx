@@ -128,21 +128,7 @@ export const JobsPage: React.FC = () => {
               </div>
             )}
           </div>
-          {userType === 'engineer' && (
-            <div className="hidden md:flex items-center gap-1 ml-2">
-              <button onClick={() => navigate('/cv')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">CV</button>
-              <button onClick={() => navigate('/jobs')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white transition-colors">Jobs</button>
-              <button onClick={() => navigate('/trainings')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Trainings</button>
-              <button onClick={() => navigate('/academy')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Academy</button>
-            </div>
-          )}
-          {userType === 'company' && (
-            <div className="hidden md:flex items-center gap-1 ml-2">
-              <button onClick={() => navigate('/co/dashboard')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Company</button>
-              <button onClick={() => navigate('/jobs')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white transition-colors">Jobs</button>
-              <button onClick={() => navigate('/co/training')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Training</button>
-            </div>
-          )}
+         
           <div className="relative flex-1 min-w-48">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input value={keyword} onChange={e => setKeyword(e.target.value)}
