@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Search, Filter, MapPin, Clock, Briefcase, ChevronRight, X, Star, Plus, Edit, Trash2, Eye, Mail, Building2 } from 'lucide-react';
+import { Search, Filter, MapPin, Clock, Briefcase, ChevronRight, X, Star, Plus, Edit, Trash2, Mail, Building2 } from 'lucide-react';
 
 const CATEGORIES = ['Certifying', 'Non-Certifying', 'Post Holder', 'Managerial', 'Compliance & Safety', 'Other'];
 const DEPARTMENTS = ['Line','Base','Line & Base','Workshop','NDT','Training','Tech Pub','Planning','Compliance','Safety','Stores / Logistics','Other'];
