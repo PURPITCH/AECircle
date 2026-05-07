@@ -104,62 +104,7 @@ export const JobsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-     {/* Search bar */}
-      <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto flex gap-2 flex-wrap items-center">
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <Link to={userType === 'company' ? '/co/dashboard' : userType === 'engineer' ? '/cv' : '/'}
-              className="text-blue-500 font-bold flex items-center gap-1.5">
-              <Briefcase className="w-5 h-5" />✈ AECircle
-            </Link>
-            {userType === 'engineer' && (
-              <div className="hidden md:flex items-center gap-1 ml-3">
-                <Link to="/cv" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><User className="w-4 h-4" /> CV</Link>
-                <Link to="/jobs" className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm"><Briefcase className="w-4 h-4" /> Jobs</Link>
-                <Link to="/trainings" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><BookOpen className="w-4 h-4" /> Trainings</Link>
-                <Link to="/academy" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><GraduationCap className="w-4 h-4" /> Academy</Link>
-              </div>
-            )}
-            {userType === 'company' && (
-              <div className="hidden md:flex items-center gap-1 ml-3">
-                <Link to="/co/dashboard" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><Building2 className="w-4 h-4" /> Company</Link>
-                <Link to="/jobs" className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm"><Briefcase className="w-4 h-4" /> Jobs</Link>
-                <Link to="/trainings" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><BookOpen className="w-4 h-4" /> Training</Link>
-              </div>
-            )}
-          </div>
-         
-          <div className="relative flex-1 min-w-48">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input value={keyword} onChange={e => setKeyword(e.target.value)}
-              placeholder="Job title, keyword..."
-              className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-          </div>
-          <div className="relative min-w-36">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input value={location} onChange={e => setLocation(e.target.value)}
-              placeholder="Location..."
-              className="w-full bg-gray-700 border border-gray-600 rounded-md pl-9 pr-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
-          </div>
-          <button onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${showFilters ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300 hover:text-white'}`}>
-            <Filter className="w-4 h-4" />
-            Filters {activeFiltersCount > 0 && <span className="bg-white text-blue-600 rounded-full w-4 h-4 text-xs flex items-center justify-center font-bold">{activeFiltersCount}</span>}
-          </button>
-          {userType === 'company' && (
-            <button onClick={() => navigate('/co/jobs/post')}
-              className="flex items-center gap-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors">
-              <Plus className="w-4 h-4" /> Post a job
-            </button>
-          )}
-          {userType === 'none' && (
-            <button onClick={() => navigate('/')}
-              className="px-4 py-2 border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-md text-sm font-medium transition-colors">
-              Sign in
-            </button>
-          )}
-        </div>
-      </div>
+    
 
       <div className="max-w-6xl mx-auto px-4 py-4">
         {/* Filter panel */}
