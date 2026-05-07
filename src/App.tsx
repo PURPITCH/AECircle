@@ -9,19 +9,19 @@ import { CreateProfile } from './components/CreateProfile';
 import { PublicCV } from './components/PublicCV';
 import { AccountSettings } from './components/AccountSettings';
 import { ChangeEmail } from './components/ChangeEmail';
-import { supabase } from './lib/supabase';
-import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
+import { CompanyLogin } from './components/CompanyLogin';
 import { CompanyRegister } from './components/CompanyRegister';
 import { CompanyDashboard } from './components/CompanyDashboard';
-import { CompanyLogin } from './components/CompanyLogin';
 import { CompanyProfile } from './components/CompanyProfile';
 import { CompanySettings } from './components/CompanySettings';
 import { CompanyJobs } from './components/CompanyJobs';
 import { CompanyTraining } from './components/CompanyTraining';
 import { PostJob } from './components/PostJob';
-import { JobsPage } from './components/JobsPage';
 import { EditJob } from './components/EditJob';
+import { JobsPage } from './components/JobsPage';
 import { JobDetail } from './components/JobDetail';
+import { supabase } from './lib/supabase';
+import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -71,16 +71,12 @@ function NavBar() {
     <nav className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-4">
         <div className="flex items-center gap-3 h-14">
-
-          {/* Logo — clicking opens dropdown */}
           <div className="relative flex-shrink-0" ref={menuRef}>
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
+            <button onClick={() => setMenuOpen(!menuOpen)}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Plane className="h-6 w-6 text-blue-500" />
               <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
             </button>
-
             {menuOpen && (
               <div className="absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-700">
@@ -118,7 +114,6 @@ function NavBar() {
             )}
           </div>
 
-          {/* Search bar */}
           <div className="flex-1 max-w-sm mx-auto">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -127,7 +122,6 @@ function NavBar() {
             </div>
           </div>
 
-          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navItem('/cv', 'CV', User)}
             {navItem('/jobs', 'Jobs', Briefcase)}
@@ -135,13 +129,11 @@ function NavBar() {
             {navItem('/academy', 'Academy', GraduationCap)}
           </div>
 
-          {/* Mobile menu button */}
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
-        {/* Mobile nav */}
         {mobileOpen && (
           <div className="md:hidden flex flex-col gap-1 pb-3">
             {navItem('/cv', 'CV', User)}
@@ -196,7 +188,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-     <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -220,7 +211,6 @@ function App() {
         <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
         <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
-      </Routes>
       </Routes>
     </BrowserRouter>
   );
