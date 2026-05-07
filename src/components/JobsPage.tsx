@@ -104,12 +104,27 @@ export const JobsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      {/* Search bar */}
+     {/* Search bar */}
       <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex gap-2 flex-wrap items-center">
           <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-blue-500 font-bold">✈ AECircle</span>
+            <span className="text-blue-500 font-bold cursor-pointer" onClick={() => navigate(userType === 'company' ? '/co/dashboard' : userType === 'engineer' ? '/cv' : '/')}>✈ AECircle</span>
           </div>
+          {userType === 'engineer' && (
+            <div className="hidden md:flex items-center gap-1 ml-2">
+              <button onClick={() => navigate('/cv')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">CV</button>
+              <button onClick={() => navigate('/jobs')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white transition-colors">Jobs</button>
+              <button onClick={() => navigate('/trainings')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Trainings</button>
+              <button onClick={() => navigate('/academy')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Academy</button>
+            </div>
+          )}
+          {userType === 'company' && (
+            <div className="hidden md:flex items-center gap-1 ml-2">
+              <button onClick={() => navigate('/co/dashboard')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Company</button>
+              <button onClick={() => navigate('/jobs')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm bg-blue-600 text-white transition-colors">Jobs</button>
+              <button onClick={() => navigate('/co/training')} className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors">Training</button>
+            </div>
+          )}
           <div className="relative flex-1 min-w-48">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input value={keyword} onChange={e => setKeyword(e.target.value)}
