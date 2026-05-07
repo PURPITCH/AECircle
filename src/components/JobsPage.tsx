@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Search, Filter, MapPin, Clock, Briefcase, ChevronRight, X, Star, Plus, Edit, Trash2, Mail, Building2 } from 'lucide-react';
+import { Search, Filter, MapPin, Clock, Briefcase, ChevronRight, X, Star, Plus, Edit, Trash2, Mail, Building2, User, BookOpen, GraduationCap, Settings, LogOut, KeyRound, Menu } from 'lucide-react';
 
 const CATEGORIES = ['Certifying', 'Non-Certifying', 'Post Holder', 'Managerial', 'Compliance & Safety', 'Other'];
 const DEPARTMENTS = ['Line','Base','Line & Base','Workshop','NDT','Training','Tech Pub','Planning','Compliance','Safety','Stores / Logistics','Other'];
@@ -108,7 +108,25 @@ export const JobsPage: React.FC = () => {
       <div className="bg-gray-800 border-b border-gray-700 px-4 py-3 sticky top-0 z-10">
         <div className="max-w-6xl mx-auto flex gap-2 flex-wrap items-center">
           <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-blue-500 font-bold cursor-pointer" onClick={() => navigate(userType === 'company' ? '/co/dashboard' : userType === 'engineer' ? '/cv' : '/')}>✈ AECircle</span>
+            <Link to={userType === 'company' ? '/co/dashboard' : userType === 'engineer' ? '/cv' : '/'}
+              className="text-blue-500 font-bold flex items-center gap-1.5">
+              <Briefcase className="w-5 h-5" />✈ AECircle
+            </Link>
+            {userType === 'engineer' && (
+              <div className="hidden md:flex items-center gap-1 ml-3">
+                <Link to="/cv" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><User className="w-4 h-4" /> CV</Link>
+                <Link to="/jobs" className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm"><Briefcase className="w-4 h-4" /> Jobs</Link>
+                <Link to="/trainings" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><BookOpen className="w-4 h-4" /> Trainings</Link>
+                <Link to="/academy" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><GraduationCap className="w-4 h-4" /> Academy</Link>
+              </div>
+            )}
+            {userType === 'company' && (
+              <div className="hidden md:flex items-center gap-1 ml-3">
+                <Link to="/co/dashboard" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><Building2 className="w-4 h-4" /> Company</Link>
+                <Link to="/jobs" className="flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm"><Briefcase className="w-4 h-4" /> Jobs</Link>
+                <Link to="/trainings" className="flex items-center gap-1 px-3 py-1.5 text-gray-300 hover:text-white hover:bg-gray-700 rounded-md text-sm"><BookOpen className="w-4 h-4" /> Training</Link>
+              </div>
+            )}
           </div>
           {userType === 'engineer' && (
             <div className="hidden md:flex items-center gap-1 ml-2">
