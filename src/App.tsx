@@ -197,7 +197,7 @@ function App() {
         <Route path="/cv" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/create" element={<ProtectedRoute><AppLayout><CreateProfile /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/:username" element={<PublicCV />} />
-        <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/jobs" element={<AppLayout><JobsPage /></AppLayout>} />
         <Route path="/jobs/:code" element={<JobDetail />} />
         <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
