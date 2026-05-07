@@ -59,9 +59,9 @@ export const JobsPage: React.FC = () => {
         }
       }
       // Fetch all active jobs
-      const { data } = await supabase
+ const { data } = await supabase
         .from('job_posts')
-        .select('*, company_profiles(entity_name, logo_url, location, username, id)')
+        .select(`*, company_profiles(entity_name, logo_url, location, username, id)`)
         .eq('is_active', true)
         .order('is_premium', { ascending: false })
         .order('created_at', { ascending: false });
@@ -191,7 +191,7 @@ export const JobsPage: React.FC = () => {
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden">
                       {job.company_profiles?.logo_url
-                        ? <img src={job.company_profiles.logo_url} alt="" className="w-full h-full object-cover" />
+                        ? <img src={job.company_profiles.logo_url} alt="" className="w-full h-full object-cover" onError={e => { (e.target as HTMLImageElement).style.display='none'; }} />
                         : job.company_profiles?.entity_name?.charAt(0) || '?'}
                     </div>
                     <div className="flex-1 min-w-0">
