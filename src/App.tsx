@@ -196,6 +196,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+     <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -203,24 +204,23 @@ function App() {
         <Route path="/cv" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/create" element={<ProtectedRoute><AppLayout><CreateProfile /></AppLayout></ProtectedRoute>} />
         <Route path="/cv/:username" element={<PublicCV />} />
-        <Route path="/jobs" element={<ProtectedRoute><AppLayout><ComingSoon title="Aviation Jobs" /></AppLayout></ProtectedRoute>} />
+        <Route path="/jobs" element={<JobsPage />} />
+        <Route path="/jobs/:code" element={<JobDetail />} />
         <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/account-settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
-        <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
+        <Route path="/co" element={<CompanyLogin />} />
         <Route path="/co/register" element={<CompanyRegister />} />
         <Route path="/co/dashboard" element={<ProtectedRoute><CompanyDashboard /></ProtectedRoute>} />
-        <Route path="/co" element={<CompanyLogin />} />
         <Route path="/co/profile" element={<ProtectedRoute><CompanyProfile /></ProtectedRoute>} />
         <Route path="/co/settings" element={<ProtectedRoute><CompanySettings /></ProtectedRoute>} />
         <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
-        <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
         <Route path="/co/jobs/post" element={<ProtectedRoute><PostJob /></ProtectedRoute>} />
-        <Route path="/jobs" element={<ProtectedRoute><AppLayout><JobsPage /></AppLayout></ProtectedRoute>} />
-        <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
         <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
-        <Route path="/jobs/:code" element={<JobDetail />} />
+        <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+        <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
+      </Routes>
       </Routes>
     </BrowserRouter>
   );
