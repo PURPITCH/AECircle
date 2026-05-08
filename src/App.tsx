@@ -212,11 +212,11 @@ function App() {
         <Route path="/co/jobs" element={<ProtectedRoute><CompanyJobs /></ProtectedRoute>} />
         <Route path="/co/jobs/post" element={<ProtectedRoute><PostJob /></ProtectedRoute>} />
         <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
-        <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+       <Route path="/trainings" element={<TrainingsPage />} />
+        <Route path="/trainings/:code" element={<TrainingDetail />} />
+        <Route path="/co/trainings" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+        <Route path="/co/trainings/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
-      <Route path="/co/trainings" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
-     <Route path="/co/trainings/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
-      <Route path="/trainings/:code" element={<TrainingDetail />} />
             
       </Routes>
     </BrowserRouter>
