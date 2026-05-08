@@ -60,7 +60,6 @@ function CompanyNav({ companyName }: { companyName: string }) {
                 <button onClick={() => { navigate('/co/settings'); setMenuOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"><Settings className="w-4 h-4" /> Account settings</button>
                 <div className="border-t border-gray-700" />
                 <button onClick={async () => { await supabase.auth.signOut(); navigate('/co'); }} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"><LogOut className="w-4 h-4" /> Sign out</button>
-              <button onClick={() => navigate('/co/training/post')}
               </div>
             )}
           </div>
@@ -117,17 +116,19 @@ export const CompanyTraining: React.FC = () => {
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-blue-400">Training Listings</h2>
-          <button onClick={() => navigate('/co/training/post')} className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
-  <Plus className="w-4 h-4" /> Add training
-</button>
+            <button onClick={() => navigate('/co/training/post')}
+              className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
+              <Plus className="w-4 h-4" /> Add training
+            </button>
           </div>
           <div className="text-center py-16 text-gray-500">
             <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-30" />
             <p className="text-sm font-medium">No training listings yet</p>
             <p className="text-xs mt-1">List your training courses to reach verified aviation engineers.</p>
-            <button onClick={() => navigate('/co/training/post')} className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm transition-colors">
-  Add a training listing
-</button>
+            <button onClick={() => navigate('/co/training/post')}
+              className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm transition-colors">
+              Add a training listing
+            </button>
           </div>
         </div>
       </div>
