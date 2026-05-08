@@ -178,7 +178,7 @@ export const TrainingsPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       {isOwnPost(t) && (
                         <>
-                          <button onClick={e => { e.stopPropagation(); navigate(`/co/training/edit/${t.id}`); }}
+                          <button onClick={e => { e.stopPropagation(); navigate(`/co/trainings/edit/${t.id}`); }}
                             className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-0.5">
                             <Edit className="w-3 h-3" /> Edit
                           </button>
