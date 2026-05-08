@@ -75,7 +75,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="hidden md:flex items-center gap-1">
             {navItem('/co/dashboard', 'Company', Building2)}
             {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
           </div>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -85,7 +85,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="md:hidden flex flex-col gap-1 pb-3">
             {navItem('/co/dashboard', 'Company', Building2)}
             {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
           </div>
         )}
       </div>
