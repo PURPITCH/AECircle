@@ -214,9 +214,9 @@ function App() {
         <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
         <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
-        <Route path="/trainings" element={<AppLayout><TrainingsPage /></AppLayout>} />
-        <Route path="/training/:code" element={<TrainingDetail />} />
-        <Route path="/co/training/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
+      <Route path="/co/trainings" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
+     <Route path="/co/trainings/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
+      <Route path="/trainings/:code" element={<TrainingDetail />} />
             
       </Routes>
     </BrowserRouter>
