@@ -72,7 +72,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="hidden md:flex items-center gap-1">
             {navItem('/co/dashboard', 'Company', Building2)}
             {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
           </div>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -82,7 +82,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="md:hidden flex flex-col gap-1 pb-3">
             {navItem('/co/dashboard', 'Company', Building2)}
             {navItem('/co/jobs', 'Jobs', Briefcase)}
-            {navItem('/co/training', 'Training', BookOpen)}
+            {navItem('/co/trainings', 'Training', BookOpen)}
           </div>
         )}
       </div>
@@ -116,7 +116,7 @@ export const CompanyTraining: React.FC = () => {
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-blue-400">Training Listings</h2>
-            <button onClick={() => navigate('/co/training/post')}
+            <button onClick={() => navigate('/co/trainings/post')}
               className="flex items-center gap-1 text-sm px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
               <Plus className="w-4 h-4" /> Add training
             </button>
@@ -125,7 +125,7 @@ export const CompanyTraining: React.FC = () => {
             <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-30" />
             <p className="text-sm font-medium">No training listings yet</p>
             <p className="text-xs mt-1">List your training courses to reach verified aviation engineers.</p>
-            <button onClick={() => navigate('/co/training/post')}
+            <button onClick={() => navigate('/co/trainings/post')}
               className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm transition-colors">
               Add a training listing
             </button>
