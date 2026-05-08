@@ -98,7 +98,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="hidden md:flex items-center gap-1">
            {navItem('/co/dashboard', 'Company', Building2)}
 {navItem('/co/jobs', 'Jobs', Briefcase)}
-{navItem('/co/training', 'Training', BookOpen)}
+{navItem('/co/trainings', 'Training', BookOpen)}
           </div>
 
           {/* Mobile button */}
@@ -111,7 +111,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="md:hidden flex flex-col gap-1 pb-3">
           {navItem('/co/dashboard', 'Company', Building2)}
 {navItem('/co/jobs', 'Jobs', Briefcase)}
-{navItem('/co/training', 'Training', BookOpen)}
+{navItem('/co/trainings', 'Training', BookOpen)}
           </div>
         )}
       </div>
