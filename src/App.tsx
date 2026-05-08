@@ -201,7 +201,6 @@ function App() {
         <Route path="/cv/:username" element={<PublicCV />} />
         <Route path="/jobs" element={<AppLayout><JobsPage /></AppLayout>} />
         <Route path="/jobs/:code" element={<JobDetail />} />
-        <Route path="/trainings" element={<ProtectedRoute><AppLayout><ComingSoon title="Trainings & Recurrency" /></AppLayout></ProtectedRoute>} />
         <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/account-settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
@@ -218,7 +217,7 @@ function App() {
         <Route path="/trainings" element={<AppLayout><TrainingsPage /></AppLayout>} />
         <Route path="/training/:code" element={<TrainingDetail />} />
         <Route path="/co/training/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
-       
+            
       </Routes>
     </BrowserRouter>
   );
