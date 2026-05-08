@@ -60,6 +60,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
                 <button onClick={() => { navigate('/co/settings'); setMenuOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"><Settings className="w-4 h-4" /> Account settings</button>
                 <div className="border-t border-gray-700" />
                 <button onClick={async () => { await supabase.auth.signOut(); navigate('/co'); }} className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"><LogOut className="w-4 h-4" /> Sign out</button>
+              <button onClick={() => navigate('/co/training/post')}
               </div>
             )}
           </div>
