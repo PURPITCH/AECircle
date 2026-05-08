@@ -107,7 +107,7 @@ export const PostTraining: React.FC = () => {
         is_premium: false,
       });
       if (error) throw error;
-      navigate('/co/training');
+      navigate('/co/trainings');
     } catch (err: any) {
       alert('Error: ' + err.message);
     } finally { setIsLoading(false); }
@@ -117,7 +117,7 @@ export const PostTraining: React.FC = () => {
     <div className="min-h-screen bg-gray-900 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-3 mb-8">
-          <button onClick={() => navigate('/co/training')} className="text-gray-400 hover:text-white transition-colors">
+          <button onClick={() => navigate('/co/trainings')} className="text-gray-400 hover:text-white transition-colors">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
@@ -275,7 +275,7 @@ export const PostTraining: React.FC = () => {
               className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-md text-sm font-medium transition-colors">
               {isLoading ? <><Loader2 className="w-4 h-4 animate-spin inline mr-2" />Submitting...</> : 'Submit training listing — $99'}
             </button>
-            <button type="button" onClick={() => navigate('/co/training')}
+            <button type="button" onClick={() => navigate('/co/trainings')}
               className="px-6 py-3 border border-gray-600 text-gray-300 hover:text-white rounded-md text-sm transition-colors">
               Cancel
             </button>
