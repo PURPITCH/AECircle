@@ -22,7 +22,9 @@ import { JobsPage } from './components/JobsPage';
 import { JobDetail } from './components/JobDetail';
 import { supabase } from './lib/supabase';
 import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogOut, Menu, X, Settings } from 'lucide-react';
-
+import { TrainingsPage } from './components/TrainingsPage';
+import { TrainingDetail } from './components/TrainingDetail';
+import { PostTraining } from './components/PostTraining';
 
 
 function NavBar() {
@@ -213,6 +215,9 @@ function App() {
         <Route path="/co/jobs/edit/:id" element={<ProtectedRoute><EditJob /></ProtectedRoute>} />
         <Route path="/co/training" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
+        <Route path="/trainings" element={<AppLayout><TrainingsPage /></AppLayout>} />
+        <Route path="/training/:code" element={<TrainingDetail />} />
+        <Route path="/co/training/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
        
       </Routes>
     </BrowserRouter>
