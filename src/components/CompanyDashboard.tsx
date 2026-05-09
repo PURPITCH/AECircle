@@ -99,6 +99,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
            {navItem('/co/dashboard', 'Company', Building2)}
 {navItem('/co/jobs', 'Jobs', Briefcase)}
 {navItem('/co/trainings', 'Training', BookOpen)}
+            {navItem('/exams', 'Exams', GraduationCap)}
           </div>
 
           {/* Mobile button */}
@@ -112,6 +113,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           {navItem('/co/dashboard', 'Company', Building2)}
 {navItem('/co/jobs', 'Jobs', Briefcase)}
 {navItem('/co/trainings', 'Training', BookOpen)}
+            {navItem('/exams', 'Exams', GraduationCap)}
           </div>
         )}
       </div>
