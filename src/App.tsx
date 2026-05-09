@@ -25,7 +25,10 @@ import { Plane, Briefcase, BookOpen, GraduationCap, Search, User, KeyRound, LogO
 import { TrainingsPage } from './components/TrainingsPage';
 import { TrainingDetail } from './components/TrainingDetail';
 import { PostTraining } from './components/PostTraining';
-
+import { ExamsPage } from './components/ExamsPage';
+import { ExamDetail } from './components/ExamDetail';
+import { PostExam } from './components/PostExam';
+import { CompanyExams } from './components/CompanyExams';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -129,8 +132,9 @@ function NavBar() {
           <div className="hidden md:flex items-center gap-1">
             {navItem('/cv', 'CV', User)}
             {navItem('/jobs', 'Jobs', Briefcase)}
-            {navItem('/trainings', 'Trainings', BookOpen)}
-            {navItem('/academy', 'Academy', GraduationCap)}
+           {navItem('/trainings', 'Trainings', BookOpen)}
+{navItem('/exams', 'Exams', GraduationCap)}
+{navItem('/academy', 'Academy', GraduationCap)}
           </div>
 
           <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-gray-400 hover:text-white">
@@ -143,7 +147,8 @@ function NavBar() {
             {navItem('/cv', 'CV', User)}
             {navItem('/jobs', 'Jobs', Briefcase)}
             {navItem('/trainings', 'Trainings', BookOpen)}
-            {navItem('/academy', 'Academy', GraduationCap)}
+{navItem('/exams', 'Exams', GraduationCap)}
+{navItem('/academy', 'Academy', GraduationCap)}
           </div>
         )}
       </div>
@@ -217,6 +222,10 @@ function App() {
         <Route path="/co/trainings" element={<ProtectedRoute><CompanyTraining /></ProtectedRoute>} />
         <Route path="/co/trainings/post" element={<ProtectedRoute><PostTraining /></ProtectedRoute>} />
         <Route path="/app/*" element={<ProtectedRoute><AppLayout><ProfileCard profile={null} /></AppLayout></ProtectedRoute>} />
+        <Route path="/exams" element={<ExamsPage />} />
+<Route path="/exams/:code" element={<ExamDetail />} />
+<Route path="/co/exams" element={<ProtectedRoute><CompanyExams /></ProtectedRoute>} />
+<Route path="/co/exams/post" element={<ProtectedRoute><PostExam /></ProtectedRoute>} />
             
       </Routes>
     </BrowserRouter>
