@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Plane, Search, Briefcase, BookOpen, Building2, Menu, X, Settings, LogOut, User, Plus, Eye, Trash2, GraduationCap } from 'lucide-react';
+import { Plane, Search, Briefcase, BookOpen, Building2, Menu, X, Settings, LogOut, User, Plus, Eye, Trash2, GraduationCap, Edit } from 'lucide-react';
 
 function CompanyNav({ companyName }: { companyName: string }) {
   const navigate = useNavigate();
