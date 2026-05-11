@@ -30,6 +30,7 @@ import { ExamDetail } from './components/ExamDetail';
 import { PostExam } from './components/PostExam';
 import { CompanyExams } from './components/CompanyExams';
 import { EditExam } from './components/EditExam';
+import { EditTraining } from './components/EditTraining';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -228,6 +229,7 @@ function App() {
 <Route path="/co/exams" element={<ProtectedRoute><CompanyExams /></ProtectedRoute>} />
 <Route path="/co/exams/post" element={<ProtectedRoute><PostExam /></ProtectedRoute>} />
         <Route path="/co/exams/edit/:id" element={<ProtectedRoute><EditExam /></ProtectedRoute>} />
+              <Route path="/co/trainings/edit/:id" element={<ProtectedRoute><EditTraining /></ProtectedRoute>} />
             
       </Routes>
     </BrowserRouter>
