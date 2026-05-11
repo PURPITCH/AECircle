@@ -60,16 +60,21 @@ export const LandingPage: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Nav */}
-        <nav className="py-6 flex items-center justify-between">
+      <nav className="py-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Plane className="h-7 w-7 text-blue-500" />
             <span className="text-2xl font-bold text-white">AECircle</span>
             <span className="text-xs text-gray-500 ml-1 hidden sm:block">by aircraft.engineer</span>
           </div>
-          <Link to="/signup"
-            className="px-4 py-2 border border-blue-500 text-sm font-medium rounded-md text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
-            Build my CV free →
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link to="/jobs" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Jobs</Link>
+            <Link to="/trainings" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Trainings</Link>
+            <Link to="/exams" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Exams</Link>
+            <Link to="/signup"
+              className="px-4 py-2 border border-blue-500 text-sm font-medium rounded-md text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
+              Build my CV free →
+            </Link>
+          </div>
         </nav>
 
         {/* Hero */}
