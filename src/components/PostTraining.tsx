@@ -173,10 +173,16 @@ export const PostTraining: React.FC = () => {
               <input className={inputClass} placeholder="e.g. Classroom, Online, Simulator, Blended" value={form.delivery} onChange={e => set('delivery', e.target.value)} />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className={labelClass}>Theory location</label>
-                <input className={inputClass} placeholder="e.g. Dubai, UAE / Online @0800Z" value={form.location_theory} onChange={e => set('location_theory', e.target.value)} />
-              </div>
+              <div className="col-span-2 grid grid-cols-2 gap-4">
+  <div>
+    <label className={labelClass}>Theory location</label>
+    <input className={inputClass} placeholder="e.g. Dubai, UAE / Online" value={form.location_theory} onChange={e => set('location_theory', e.target.value)} />
+  </div>
+  <div>
+    <label className={labelClass}>Theory time <span className="text-gray-500 text-xs">(for online sessions)</span></label>
+    <input className={inputClass} placeholder="e.g. 0800Z / 1000 GST / 0900 UTC+3" value={form.location_theory_time || ''} onChange={e => set('location_theory_time', e.target.value)} />
+  </div>
+</div>
               <div>
                 <label className={labelClass}>Practical location</label>
                 <input className={inputClass} placeholder="e.g. Madrid, Spain" value={form.location_practical} onChange={e => set('location_practical', e.target.value)} />
