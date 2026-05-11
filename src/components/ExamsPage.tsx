@@ -76,7 +76,7 @@ export const ExamsPage: React.FC = () => {
   };
 
   const formatDate = (d: string) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
-  const formatTime = (t: string) => t || '';
+ const formatTime = (t: string) => t ? `${t.replace(':', '')}HRS` : '';
 
   return (
     <div className="min-h-screen bg-gray-900">
