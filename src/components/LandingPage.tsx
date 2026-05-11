@@ -70,6 +70,7 @@ export const LandingPage: React.FC = () => {
             <Link to="/jobs" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Jobs</Link>
             <Link to="/trainings" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Trainings</Link>
             <Link to="/exams" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Exams</Link>
+            <Link to="/academy" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Academy</Link>
             <Link to="/signup"
               className="px-4 py-2 border border-blue-500 text-sm font-medium rounded-md text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
               Build my CV free →
