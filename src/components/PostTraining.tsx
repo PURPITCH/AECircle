@@ -175,7 +175,7 @@ export const PostTraining: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className={labelClass}>Theory location</label>
-                <input className={inputClass} placeholder="e.g. Dubai, UAE / Online" value={form.location_theory} onChange={e => set('location_theory', e.target.value)} />
+                <input className={inputClass} placeholder="e.g. Dubai, UAE / Online @0800Z" value={form.location_theory} onChange={e => set('location_theory', e.target.value)} />
               </div>
               <div>
                 <label className={labelClass}>Practical location</label>
