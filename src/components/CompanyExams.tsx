@@ -179,6 +179,7 @@ export const CompanyExams: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-700">
                     <button onClick={() => navigate(`/exams/${exam.exam_code}`)} className="flex items-center gap-1 text-xs text-gray-400 hover:text-white transition-colors"><Eye className="w-3 h-3" /> View</button>
+                    <button onClick={() => navigate(`/co/exams/edit/${exam.id}`)} className="flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"><Edit className="w-3 h-3" /> Edit</button>
                     <button onClick={() => handleDelete(exam.id)} className="text-xs text-red-400 hover:text-red-300 transition-colors">Delete</button>
                     <span className="text-xs text-gray-600 ml-auto">{new Date(exam.created_at).toLocaleDateString('en-GB')}</span>
                   </div>
