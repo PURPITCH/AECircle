@@ -109,7 +109,7 @@ export const ExamDetail: React.FC = () => {
                   {exam.timetable.map((row: any, i: number) => (
                     <div key={i} className="grid grid-cols-3 gap-2 px-4 py-2.5 text-sm text-gray-300 border-b border-gray-700/50 last:border-0 hover:bg-gray-700/30">
                       <span>{formatDate(row.date)}</span>
-                      <span>{row.time ? `${row.time.replace(':', '')}HRS` : ''}</span>
+                      <span>{row.time ? row.time.replace(':', '') : ''}</span>
                       <span>{row.module}</span>
                     </div>
                   ))}
