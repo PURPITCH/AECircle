@@ -40,7 +40,7 @@ export const CompanyLogin: React.FC = () => {
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Plane className="h-7 w-7 text-blue-500" />
-            <span className="text-2xl font-bold text-white">AECircle</span>
+            <span className="text-2xl font-bold text-white">Aircraft Engineer</span>
           </div>
           <p className="text-gray-400 text-sm">Company & Recruiter Portal</p>
         </div>
