@@ -64,7 +64,7 @@ export const LandingPage: React.FC = () => {
           <div className="flex items-center gap-2">
             <Plane className="h-7 w-7 text-blue-500" />
             <span className="text-2xl font-bold text-white">Aircraft Engineer</span>
-            <span className="text-xs text-gray-500 ml-1 hidden sm:block">by aircraft.engineer</span>
+            <span className="text-xs text-gray-500 ml-1 hidden sm:block"></span>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/jobs" className="px-3 py-2 text-sm text-gray-300 hover:text-white transition-colors hidden sm:block">Jobs</Link>
