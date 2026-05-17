@@ -84,7 +84,7 @@ function NavBar() {
             <button onClick={() => setMenuOpen(!menuOpen)}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Plane className="h-6 w-6 text-blue-500" />
-              <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
+             <span className="text-lg font-bold text-white hidden sm:block">Aircraft.Engineer</span>
             </button>
             {menuOpen && (
               <div className="absolute left-0 mt-2 w-56 bg-gray-800 border border-gray-600 rounded-xl shadow-2xl z-50 overflow-hidden">
@@ -208,7 +208,7 @@ function App() {
         <Route path="/cv/:username" element={<PublicCV />} />
         <Route path="/jobs" element={<AppLayout><JobsPage /></AppLayout>} />
         <Route path="/jobs/:code" element={<JobDetail />} />
-        <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="AECircle Academy" /></AppLayout></ProtectedRoute>} />
+        <Route path="/academy" element={<ProtectedRoute><AppLayout><ComingSoon title="Aircraft Engineer Academy" /></AppLayout></ProtectedRoute>} />
         <Route path="/account-settings" element={<ProtectedRoute><AccountSettings /></ProtectedRoute>} />
         <Route path="/change-email" element={<ProtectedRoute><ChangeEmail /></ProtectedRoute>} />
         <Route path="/co" element={<CompanyLogin />} />
