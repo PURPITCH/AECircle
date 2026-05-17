@@ -38,7 +38,7 @@ function CompanyNav({ companyName }: { companyName: string }) {
           <div className="relative flex-shrink-0" ref={menuRef}>
             <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <Plane className="h-6 w-6 text-blue-500" />
-              <span className="text-lg font-bold text-white hidden sm:block">AECircle</span>
+              <span className="text-lg font-bold text-white hidden sm:block">Aircraft.Engineer</span>
               <span className="text-gray-500 text-xs hidden sm:block">/ Co</span>
             </button>
             {menuOpen && (
