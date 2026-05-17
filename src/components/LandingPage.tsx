@@ -63,7 +63,7 @@ export const LandingPage: React.FC = () => {
       <nav className="py-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Plane className="h-7 w-7 text-blue-500" />
-            <span className="text-2xl font-bold text-white">AECircle</span>
+            <span className="text-2xl font-bold text-white">Aircraft Engineer</span>
             <span className="text-xs text-gray-500 ml-1 hidden sm:block">by aircraft.engineer</span>
           </div>
           <div className="flex items-center gap-2">
@@ -94,7 +94,7 @@ export const LandingPage: React.FC = () => {
 
             <p className="mt-6 text-lg text-gray-400 leading-relaxed">
               Your current CV is 3 pages of tables that ATS systems can't read and recruiters skip in 10 seconds.
-              AECircle gives you a standardised profile built around how aviation recruitment actually works.
+              Aircraft Engineer gives you a standardised profile built around how aviation recruitment actually works.
             </p>
 
             <div className="mt-8 space-y-3">
@@ -134,7 +134,7 @@ export const LandingPage: React.FC = () => {
 
           {/* Sign in form */}
           <div className="bg-gray-800 p-8 rounded-xl shadow-xl border border-gray-700">
-            <h2 className="text-xl font-bold text-white mb-1">Sign in to AECircle</h2>
+            <h2 className="text-xl font-bold text-white mb-1">Sign in</h2>
             <p className="text-gray-400 text-sm mb-6">Welcome back, engineer.</p>
 
             {error && (
@@ -189,7 +189,7 @@ export const LandingPage: React.FC = () => {
             </form>
 
             <div className="mt-6 pt-6 border-t border-gray-700 text-center">
-              <p className="text-gray-400 text-sm mb-3">New to AECircle?</p>
+              <p className="text-gray-400 text-sm mb-3">New to Aircraft.Engineer?</p>
               <Link to="/signup"
                 className="w-full flex justify-center py-2.5 px-4 border border-gray-600 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 transition-colors">
                 Build my free CV →
@@ -218,7 +218,7 @@ export const LandingPage: React.FC = () => {
             <button className="text-left hover:text-gray-300">Send Feedback</button>
           </div>
           <div className="mt-4 text-sm text-gray-600">
-            AECircle © 2026 · aircraft.engineer · Built by an engineer, for engineers.
+            Aircraft Engineer © 2026 Built by an engineer, for engineers.
           </div>
         </footer>
       </div>
